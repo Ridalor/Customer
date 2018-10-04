@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse
-from models import CustomerModel
+from models import CustomerModel, RevokedTokenModel
 
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
 
@@ -51,26 +51,41 @@ class CustomerLogin(Resource):
             return {'message': 'Wrong credentials'}
 
 class CustomerLogoutAccess(Resource):
+    @jwt_required
     def post(self):
-        return {'message': 'Customer Logout'}
+        jti = get_raw_jwt()['jti']
+        try:
+            revoked_token = RevokedTokenModel(jti = jti)
+            revoked_token.add()
+            return {'message': 'Access token has been revoked'}
+        except:
+            return {'message': 'Something went wrong'}, 500
 
 class CustomerLogoutRefresh(Resource):
+    @jwt_refresh_token_required
     def post(self):
-        return {'message': 'Customer Logout'}
+        jti = get_raw_jwt()['jti']
+        try:
+            revoked_token = RevokedTokenModel(jti = jti)
+            revoked_token.add()
+            return {'message': 'Refresh token has been revoked'}
+        except:
+            return {'message': 'Something went wrong'}, 500
 
 class TokenRefresh(Resource):
+    @jwt_refresh_token_required
     def post(self):
-        return {'message': 'Token Refresh'}
+        current_user = get_jwt_identity()
+        access_token = create_access_token(identity = current_user)
+        return {'access_token': access_token}
 
+#Only for testing purposes, TODO: Delete AllCustomers class
 class AllCustomers(Resource):
     def get(self):
         return CustomerModel.return_all()
     
     def delete(self):
         return CustomerModel.delete_all()
-
-    def delete(self):
-        return {'message': 'Delete all customers'}
 
 
 class SecretResource(Resource):
