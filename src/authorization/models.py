@@ -1,5 +1,5 @@
 from run import db
-
+from run import pwd_context
 
 class CustomerModel(db.Model):
     __tablename__ = 'customers'
@@ -8,6 +8,14 @@ class CustomerModel(db.Model):
     email = db.Column(db.String(120), unique = True, nullable = False)
     password = db.Column(db.String(120), nullable = False)
     
+    @staticmethod
+    def generate_hash(password):
+        return pwd_context.hash(password)
+
+    @staticmethod
+    def verify_hash(password, hash):
+        return pwd_context.verify(password, hash)
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()

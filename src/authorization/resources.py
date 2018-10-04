@@ -87,7 +87,7 @@ class AllCustomers(Resource):
     def delete(self):
         return CustomerModel.delete_all()
 
-
+#For testing
 class SecretResource(Resource):
     def get(self):
         return {
