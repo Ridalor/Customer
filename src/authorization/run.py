@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_restful import Api
-import views, models, resources
 from flask_jwt_extended import JWTManager
 from passlib.context import CryptContext
 from flask_sqlalchemy import SQLAlchemy
@@ -8,31 +7,20 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 api = Api(app)
 
-#Adding jwt
-app.config['JWT_SECRET_KEY'] = 'jwt-secret-string'
-jwt = JWTManager(app)
-
-#Adding routes for registration and login and other stuff
-api.add_resource(resources.CustomerRegistration, '/registration')
-api.add_resource(resources.CustomerLogin, '/login')
-api.add_resource(resources.CustomerLogoutAccess, '/logout/access')
-api.add_resource(resources.CustomerLogoutRefresh, '/logout/refresh')
-api.add_resource(resources.TokenRefresh, '/token/refresh')
-api.add_resource(resources.AllCustomers, '/customers')
-
-#Not sure what to do with this...
-api.add_resource(resources.SecretResource, '/secret')
-
 #Setting up sqlalchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@127.0.0.1:3310/customer'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'some-secret-string'
 
-db = SQLAlchemy(app)
+db = SQLAlchemy()
 
 @app.before_first_request
 def create_tables():
     db.create_all()
+
+#Adding jwt
+app.config['JWT_SECRET_KEY'] = 'jwt-secret-string'
+jwt = JWTManager(app)
 
 #Setting up blacklist(might change to whitelist later)
 app.config['JWT_BLACKLIST_ENABLED'] = True
@@ -54,3 +42,18 @@ pwd_context = CryptContext(
     #Deprecated="auto" will mark all but the default hash as deprecated
     deprecated="auto"
 )
+
+import views, models, resources
+
+#Adding routes for registration and login and other stuff
+api.add_resource(resources.CustomerRegistration, '/registration')
+api.add_resource(resources.CustomerLogin, '/login')
+api.add_resource(resources.CustomerLogoutAccess, '/logout/access')
+api.add_resource(resources.CustomerLogoutRefresh, '/logout/refresh')
+api.add_resource(resources.TokenRefresh, '/token/refresh')
+api.add_resource(resources.AllCustomers, '/customers')
+
+#Not sure what to do with this...
+api.add_resource(resources.SecretResource, '/secret')
+
+

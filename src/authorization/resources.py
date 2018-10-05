@@ -88,7 +88,9 @@ class AllCustomers(Resource):
         return CustomerModel.delete_all()
 
 #For testing
+
 class SecretResource(Resource):
+    @jwt_required
     def get(self):
         return {
             "answer": 42
