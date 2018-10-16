@@ -2,7 +2,7 @@ from run import db
 from run import pwd_context
 
 class CustomerModel(db.Model):
-    __tablename__ = 'customers'
+    __tablename__ = 'customer'
 
     id = db.Column(db.Integer, primary_key = True)
     email = db.Column(db.String(120), unique = True, nullable = False)
@@ -24,6 +24,7 @@ class CustomerModel(db.Model):
     def find_by_email(cls, email):
         return cls.query.filter_by(email = email).first()
 
+    # TODO: Remove this method before production!
     @classmethod
     def return_all(cls):
         def to_json(x):
@@ -33,6 +34,7 @@ class CustomerModel(db.Model):
             }
         return {'customers': list(map(lambda x: to_json(x), CustomerModel.query.all()))}
 
+    # TODO: Remove this method before production!
     @classmethod
     def delete_all(cls):
         try:
