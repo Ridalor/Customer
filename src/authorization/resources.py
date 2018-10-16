@@ -97,6 +97,7 @@ class AllCustomers(Resource):
         return CustomerModel.return_all()
     
     def delete(self):
+        print("Got into delete")
         return CustomerModel.delete_all()
 
 #Currently for testing only

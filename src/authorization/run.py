@@ -12,11 +12,15 @@ print("Starting")
 api = Api(app)
 
 #Setting up sqlalchemy
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@127.0.0.1:3310/customer'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@127.0.0.1:3310/customer'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'some-secret-string'
 
-db = SQLAlchemy(app=app)
+db = SQLAlchemy(app)
+
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 #Adding jwt
 app.config['JWT_SECRET_KEY'] = 'jwt-secret-string'
