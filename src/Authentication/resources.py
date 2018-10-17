@@ -13,6 +13,7 @@ parser.add_argument('password', help = 'This field cannot be blank', required = 
 class CustomerRegistration(Resource):
     def post(self):
         data = parser.parse_args()
+        # Hashing password as soon as possible, Please dont add anything between the line above and below this comment
         data["password"] = Customer.generate_hash(data["password"])
 
         # Checking if the email is already in our database, returns message if it is. Countinues if not.
@@ -31,7 +32,7 @@ class CustomerRegistration(Resource):
             password = data["password"]
         )
         try:
-                # Saving the new user to the database. the method is located in models.py
+            # Saving the new user to the database. the method is located in models.py
             new_customer.save_to_db()
 
             # Making tokens so the customer is logged in
@@ -65,7 +66,7 @@ class CustomerLogin(Resource):
                 'refresh_token': refresh_token
             }
         else:
-            return {'message': 'Wrong credentials'}
+            return {'message': 'Wrong email or password'}
 
 class CustomerLogoutAccess(Resource):
     # Requires a jwt object to run, which basically means that the customer must be logged in to log out(which makes sense)
@@ -116,4 +117,3 @@ class SecretResource(Resource):
         return {
             "answer": 42
         }
-
