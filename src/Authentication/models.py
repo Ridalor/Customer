@@ -1,13 +1,15 @@
 from run import db
 from run import pwd_context
 
-class CustomerModel(db.Model):
-    __tablename__ = 'customer'
+class Customer(db.Model):
 
-    id = db.Column(db.Integer, primary_key = True)
-    email = db.Column(db.String(120), unique = True, nullable = False)
-    password = db.Column(db.String(120), nullable = False)
-    
+    cid = db.Column(db.Integer, primary_key = True, nullable = False)
+    email = db.Column(db.String(128), unique = True, nullable = False)
+    password = db.Column(db.String(128), unique = False, nullable = True)
+
+    firstName = db.Column(db.String(128), unique = False, nullable = True)
+    lastName = db.Column(db.String(128), unique = False, nullable = True)
+
     @staticmethod
     def generate_hash(password):
         return pwd_context.hash(password)
@@ -16,13 +18,17 @@ class CustomerModel(db.Model):
     def verify_hash(password, hash):
         return pwd_context.verify(password, hash)
 
-    def save_to_db(self):
-        db.session.add(self)
-        db.session.commit()
+    @classmethod
+    def find_by_cid(cls, cid):
+        return cls.query.filter_by(cid = cid).first()
 
     @classmethod
     def find_by_email(cls, email):
         return cls.query.filter_by(email = email).first()
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
 
     # TODO: Remove this method before production!
     @classmethod
@@ -30,9 +36,12 @@ class CustomerModel(db.Model):
         def to_json(x):
             return {
                 'email': x.email,
+                'firstName': x.firstName,
+                'lastName': x.lastName,
                 'password': x.password
-            }
-        return {'customers': list(map(lambda x: to_json(x), CustomerModel.query.all()))}
+                }
+
+        return {'customers': list(map(lambda x: to_json(x), Customer.query.all()))}
 
     # TODO: Remove this method before production!
     @classmethod
@@ -43,6 +52,7 @@ class CustomerModel(db.Model):
             return {'message': '{} row(s) deleted'.format(num_rows_deleted)}
         except:
             return {'message': 'Something went wrong'}
+
 
 class RevokedTokenModel(db.Model):
     __tablename__ = 'revoked_tokens'

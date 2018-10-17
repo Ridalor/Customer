@@ -1,5 +1,7 @@
 from flask_restful import Resource, reqparse
-from models import CustomerModel, RevokedTokenModel
+from models import Customer, RevokedTokenModel
+import random
+import json
 
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
 
@@ -11,19 +13,26 @@ parser.add_argument('password', help = 'This field cannot be blank', required = 
 class CustomerRegistration(Resource):
     def post(self):
         data = parser.parse_args()
+        data["password"] = Customer.generate_hash(data["password"])
 
         # Checking if the email is already in our database, returns message if it is. Countinues if not.
-        if CustomerModel.find_by_username(data['email']):
+        if Customer.find_by_email(data['email']):
           return {'message': 'User {} already exists'. format(data['email'])}
 
+        #TODO: Improve this \/
+        cid = random.randint(10000000, 99999999)
+        while Customer.find_by_cid(cid):
+            cid += 1
+        
         # Making a new model with the email and password provided
-        new_user = CustomerModel(
+        new_customer = Customer(
+            cid = cid,
             email = data['email'],
-            password = data['password']
+            password = data["password"]
         )
         try:
-            # Saving the new user to the database. the method is located in models.py
-            new_user.save_to_db()
+                # Saving the new user to the database. the method is located in models.py
+            new_customer.save_to_db()
 
             # Making tokens so the customer is logged in
             access_token = create_access_token(identity = data['email'])
@@ -34,15 +43,15 @@ class CustomerRegistration(Resource):
                 'access_token': access_token,
                 'refresh_token': refresh_token
             }
-        except:
-            return {'message': 'Something went wrong'}, 500
+        except Exception as err:
+            return {'message': 'Something went wrong, try restarting the server', "error": err}, 500
 
 class CustomerLogin(Resource):
     def post(self):
         data = parser.parse_args()
 
         # Finding customer from the database
-        current_customer = CustomerModel.find_by_username(data['email'])
+        current_customer = Customer.find_by_username(data['email'])
         if not current_customer:
             return {'message': 'User {} doesn\'t exist'.format(data['email'])}
         
@@ -94,11 +103,11 @@ class TokenRefresh(Resource):
 ## TODO: (IMPORTANTE) Delete "AllCustomers" class before production!
 class AllCustomers(Resource):
     def get(self):
-        return CustomerModel.return_all()
+        return Customer.return_all()
     
     def delete(self):
         print("Got into delete")
-        return CustomerModel.delete_all()
+        return Customer.delete_all()
 
 #Currently for testing only
 class SecretResource(Resource):
