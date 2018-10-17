@@ -52,16 +52,16 @@ class CustomerLogin(Resource):
         data = parser.parse_args()
 
         # Finding customer from the database
-        current_customer = Customer.find_by_username(data['email'])
+        current_customer = Customer.find_by_email(data['email'])
         if not current_customer:
             return {'message': 'User {} doesn\'t exist'.format(data['email'])}
         
         # Checking password, if correct, it makes tokens to log the customer in
-        if data['password'] == current_customer.password:
+        if Customer.verify_hash(data["password"], current_customer.password):
             access_token = create_access_token(identity = data['email'])
             refresh_token = create_refresh_token(identity = data['email'])
             return {
-                'message': 'Logged in as {}'.format(current_customer.username),
+                'message': 'Logged in as {}'.format(current_customer.email),
                 'access_token': access_token,
                 'refresh_token': refresh_token
             }
@@ -117,3 +117,13 @@ class SecretResource(Resource):
         return {
             "answer": 42
         }
+
+class GetCid(Resource):
+    @jwt_required
+    def get(self):
+        current_customer = get_jwt_identity()
+        try:
+            customer_object = Customer.find_by_email(current_customer)
+            return {"cid": customer_object.cid}
+        except Exception as err:
+            return {"message": "Something went wrong on the server, check your request or contact the Customer team", "err": err}, 500

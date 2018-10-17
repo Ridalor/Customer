@@ -58,6 +58,7 @@ api.add_resource(resources.CustomerLogoutAccess, '/logout/access')
 api.add_resource(resources.CustomerLogoutRefresh, '/logout/refresh')
 api.add_resource(resources.TokenRefresh, '/token/refresh')
 api.add_resource(resources.AllCustomers, '/customers')
+api.add_resource(resources.GetCid, '/get-cid')
 
 # Not sure what to do with this yet...
 api.add_resource(resources.SecretResource, '/secret')
