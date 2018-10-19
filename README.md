@@ -12,7 +12,7 @@ This will come at a later date.
 * Flask-RESTful 0.3.6
 * Flask-JWT-Extended 3.13.1
 * passlib 1.7.1
-    * argon2-cffi
+    * argon2-cffi 18.3.0
 
 ## Prerequisites
 * [Git](https://git-scm.com/downloads)
