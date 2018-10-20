@@ -127,3 +127,15 @@ class GetCid(Resource):
             return {"cid": customer_object.cid}
         except Exception as err:
             return {"message": "Something went wrong on the server", "error": str(err)}, 500
+
+class GetEmail(Resource):
+    @jwt_required
+    def get(self):
+        #TODO: Implement
+        return {"message": "This has not been implemented yet, coming soon!"}
+
+class GetName(Resource):
+    @jwt_required
+    def get(self):
+        #TODO: Implement
+        return {"message": "This has not been implemented yet, coming soon!"}
