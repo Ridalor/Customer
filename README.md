@@ -39,7 +39,7 @@ Make sure you have installed Git and Docker before doing the commands below.
 
 With our Api you can get the name, email and Customer Identification Number(cid) of the customer.
 
-For in-depth usage of our Api, look at the docs here: [Api docs](docs/)
+_For in-depth usage of our Api and how to easily get started, look at the docs here: [Api docs](docs/)_
 
 To get information you send a get request with the raw jwt named "jti" as data. Use the base address above with one of the following behind:
 For example 127.0.0.1:5052/customer/cid to get the cid of the currently logged in customer.

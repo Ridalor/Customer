@@ -2,6 +2,8 @@
 
 Welcome to the documentation for Customer Api. 
 
+Full example to quickly get started at the bottom or click here: [Full example](#fullExample)
+
 ## Getting information about the Customer
 
 In order to get information about the customer, send a request with the raw jwt object(which is sent by the client).
@@ -10,7 +12,7 @@ In order to get information about the customer, send a request with the raw jwt 
 
 * To send the jwt along with the request take the jwt object named "jti" and send it as data in the request.
 
-* Example in python with flask:
+* JWT Example in python with flask:
     ```python
     import requests
     from flask_jwt_extended import get_raw_jwt
@@ -152,5 +154,71 @@ def get_name():
     return name
 
     > {"firstName": <first name>, "lastName": <last name>}
+
+```
+
+## <a name="fullExample"></a> Full example
+
+Here is a full example of how to send requests to our Api
+
+```python
+import requests
+from flask_jwt_extended import get_raw_jwt
+
+
+def get_cid():
+    r = requests.get("127.0.0.1:5052/customer/cid", {"jti": get_raw_jwt()})
+    
+    if r.status() == 500:
+        return "Server error"
+    else if r.status() == 404:
+        return "Noone is logged in"
+    
+    print(r.json()["message"])
+    > "Cid for the current customer was found"
+    
+    cid = r.json()["cid"]
+    return cid
+
+
+def get_email():
+    r = requests.get("127.0.0.1:5052/customer/email", {"jti": get_raw_jwt()})
+    
+    if r.status() == 500:
+        return "Server error"
+    else if r.status() == 404:
+        return "Noone is logged in"
+
+    print(r.json()["message"])
+    > "Email of current Customer was found"
+    
+    email = r.json()["email"]
+    return email
+
+
+def get_name():
+    r = requests.get("127.0.0.1:5052/customer/name", {"jti": get_raw_jwt()})
+    
+    if r.status() == 500:
+        return "Server error"
+    else if r.status() == 404:
+        return "Noone is logged in"
+    
+    print(r.json()["message"])
+    > "The Name of the current customer was found"
+
+    name["firstName"] = r.json()["firstName"]
+    name["lastName"] = r.json()["lastName"]
+    return name
+
+def main():
+    cid = get_cid()
+    > 40129339
+
+    email = get_email()
+    > "TestCustomer1@test.com"
+
+    name = get_name()
+    > {"firstName": "Test", "lastName": "Customer"}
 
 ```
