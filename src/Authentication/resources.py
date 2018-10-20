@@ -27,9 +27,9 @@ class CustomerRegistration(Resource):
         
         # Making a new model with the email and password provided
         new_customer = Customer(
-            cid = cid,
-            email = data['email'],
-            password = data["password"]
+            customer_id = cid,
+            customer_email = data['email'],
+            customer_password = data["password"]
         )
         try:
             # Saving the new user to the database. the method is located in models.py
@@ -45,7 +45,7 @@ class CustomerRegistration(Resource):
                 'refresh_token': refresh_token
             }
         except Exception as err:
-            return {'message': 'Something went wrong, try restarting the server', "error": err}, 500
+            return {'message': 'Something went wrong', "error": str(err)}, 500
 
 class CustomerLogin(Resource):
     def post(self):
@@ -77,8 +77,8 @@ class CustomerLogoutAccess(Resource):
             revoked_token = RevokedTokenModel(jti = jti)
             revoked_token.add()
             return {'message': 'Access token has been revoked'}
-        except:
-            return {'message': 'Something went wrong'}, 500
+        except Exception as err:
+            return {'message': 'Something went wrong', "error": str(err)}, 500
 
 class CustomerLogoutRefresh(Resource):
     @jwt_refresh_token_required
@@ -88,8 +88,8 @@ class CustomerLogoutRefresh(Resource):
             revoked_token = RevokedTokenModel(jti = jti)
             revoked_token.add()
             return {'message': 'Refresh token has been revoked'}
-        except:
-            return {'message': 'Something went wrong'}, 500
+        except Exception as err:
+            return {'message': 'Something went wrong', "error": str(err)}, 500
 
 class TokenRefresh(Resource):
     @jwt_refresh_token_required
@@ -126,4 +126,4 @@ class GetCid(Resource):
             customer_object = Customer.find_by_email(current_customer)
             return {"cid": customer_object.cid}
         except Exception as err:
-            return {"message": "Something went wrong on the server, check your request or contact the Customer team", "err": err}, 500
+            return {"message": "Something went wrong on the server", "error": str(err)}, 500
