@@ -52,15 +52,15 @@ import views, models, resources
 
 # Adding routes for registration and login and other stuff
 ## These are located in the resources file
-api.add_resource(resources.CustomerRegistration, '/customer/registration')
-api.add_resource(resources.CustomerLogin, '/customer/login')
-api.add_resource(resources.CustomerLogoutAccess, '/customer/logout/access')
-api.add_resource(resources.CustomerLogoutRefresh, '/customer/logout/refresh')
-api.add_resource(resources.TokenRefresh, '/customer/token/refresh')
-api.add_resource(resources.AllCustomers, '/customer/customers')
-api.add_resource(resources.GetCid, '/customer/get-cid')
-api.add_resource(resources.GetEmail, '/customer/get-email')
-api.add_resource(resources.GetName, '/customer/get-name')
+api.add_resource(resources.CustomerRegistration, '/v1/registration')
+api.add_resource(resources.CustomerLogin, '/v1/login')
+api.add_resource(resources.CustomerLogoutAccess, '/v1/logout/access')
+api.add_resource(resources.CustomerLogoutRefresh, '/v1/logout/refresh')
+api.add_resource(resources.TokenRefresh, '/v1/token/refresh')
+api.add_resource(resources.AllCustomers, '/v1/customers')
+api.add_resource(resources.GetCid, '/v1/get-cid')
+api.add_resource(resources.GetEmail, '/v1/get-email')
+api.add_resource(resources.GetName, '/v1/get-name')
 
 # Not sure what to do with this yet...
 api.add_resource(resources.SecretResource, '/secret')
