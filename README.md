@@ -1,7 +1,6 @@
-![Logo of the project](https://github.com/DAT210/conventions/blob/master/images/modules.png)
+![Logo of the project](docs/images/Customer_logo.png)
 
 # Customer &middot; Group 5 &middot; [![Build Status](https://img.shields.io/travis/npm/npm/latest.svg?style=flat-square)](https://travis-ci.org/npm/npm) [![npm](https://img.shields.io/npm/v/npm.svg?style=flat-square)](https://www.npmjs.com/package/npm) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/your/your-project/blob/master/LICENSE)
-> Additional information or tag line
 
 Welcome to the Customer Database team. We taking care of registering new customers and logging them in, as well as giving other teams information about the Customer.
 
@@ -38,4 +37,26 @@ Make sure you have installed Git and Docker before doing the commands below.
 
 ## Api Reference
 
-How to use the Api can be found here: [Api docs](docs/)
+With our Api you can get the name, email and Customer Identification Number(cid) of the customer.
+
+For in-depth usage of our Api, look at the docs here: [Api docs](docs/)
+
+To get information you send a get request with the raw jwt named "jti" as data. Use the base address above with one of the following behind:
+For example 127.0.0.1:5052/customer/cid to get the cid of the currently logged in customer.
+
+* /customer
+    * /cid
+    * /email
+    * /name
+
+The request returns a json object with a message and the variable if it was successful.
+
+Example: 
+```json
+{
+    "message": "Cid of the current customer was found",
+    "cid": 40129339
+}
+```
+
+For more information about sending requests and the returns look at the docs here: [Api docs](docs/)
