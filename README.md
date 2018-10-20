@@ -37,26 +37,102 @@ Make sure you have installed Git and Docker before doing the commands below.
 
 ## Api Reference
 
-With our Api you can get the name, email and Customer Identification Number(cid) of the customer.
+With our Api you can registrate, log customers in and get the name, email and Customer Identification Number(cid) of the customer.
 
-_For in-depth usage of our Api and how to easily get started, look at the docs here: [Api docs](docs/)_
+__For better explanation and more in-depth usage look at the [Api docs](docs/). If you just want an overview, continue reading.__
 
-To get information you send a get request with the raw jwt named "jti" as data. Use the base address above with one of the following behind:
+In order to obtain information about the Customer, send a get-request with the raw jwt named "jti" as data(how to do that is in docs linked above). Use the base address in the "setting up dev" section with one of the following URIs attached:
+
 For example 127.0.0.1:5052/customer/cid to get the cid of the currently logged in customer.
 
-* /customer
-    * /cid
-    * /email
-    * /name
+### Get information about the currently logged in customer
 
-The request returns a json object with a message and the variable if it was successful.
+#### Get cid
 
-Example: 
-```json
-{
-    "message": "Cid of the current customer was found",
-    "cid": 40129339
-}
+```http
+GET     /customer/cid
+SEND    NONE
+RECIEVE {
+            "message": <message>,
+            "cid": <cid>
+        }
 ```
 
-For more information about sending requests and the returns look at the docs here: [Api docs](docs/)
+#### Get email
+
+```http
+GET     /customer/email
+SEND    NONE
+RECIEVE {
+            "message": <message>,
+            "email": <email>
+        }
+```
+
+#### Get name
+
+```http
+GET     /customer/name
+SEND    NONE
+RECIEVE {
+            "message": <message>,
+            "firstName": <firstName>,
+            "lastName": <lastName>
+        }
+```
+
+### To registrate a new customer
+
+```http
+POST    /registration
+SEND    {
+            "email": <email>,
+            "password": <password>
+        }
+RECIEVE {
+            "message": <message>,
+            "access_token": <access_token>,
+            "refresh_token": <refresh_token>
+        }
+```
+
+### To log in a customer
+
+```http
+POST     /login
+SEND    {
+            "email": <email>,
+            "password": <password>
+        }
+RECIEVE {
+            "message": <message>,
+            "access_token": <access_token>,
+            "refresh_token": <refresh_token>
+            
+        }
+```
+### To log out from access
+
+```http
+POST     /logout/access
+SEND    {
+            "Bearer": "access_token <access_token>"
+        }
+RECIEVE {
+            "message": <message>
+        }
+```
+
+### To log out from refresh
+
+```http
+POST     /logout/refresh
+SEND    {
+            "Bearer": "refresh_token <refresh_token>"
+        }
+RECIEVE {
+            "message": <message>
+        }
+```
+
+For more information about sending requests and the response look at the docs here: [Api docs](docs/)
