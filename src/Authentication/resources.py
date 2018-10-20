@@ -43,7 +43,7 @@ class CustomerRegistration(Resource):
                 'message': 'Customer {} was created'.format( data['email']),
                 'access_token': access_token,
                 'refresh_token': refresh_token
-            }
+            }, 201
         except Exception as err:
             return {'message': 'Something went wrong', "error": str(err)}, 500
 
@@ -64,7 +64,7 @@ class CustomerLogin(Resource):
                 'message': 'Logged in as {}'.format(current_customer.email),
                 'access_token': access_token,
                 'refresh_token': refresh_token
-            }
+            }, 201
         else:
             return {'message': 'Wrong email or password'}
 
@@ -76,7 +76,7 @@ class CustomerLogoutAccess(Resource):
         try:
             revoked_token = RevokedTokenModel(jti = jti)
             revoked_token.add()
-            return {'message': 'Access token has been revoked'}
+            return {'message': 'Access token has been revoked'}, 204
         except Exception as err:
             return {'message': 'Something went wrong', "error": str(err)}, 500
 
@@ -87,7 +87,7 @@ class CustomerLogoutRefresh(Resource):
         try:
             revoked_token = RevokedTokenModel(jti = jti)
             revoked_token.add()
-            return {'message': 'Refresh token has been revoked'}
+            return {'message': 'Refresh token has been revoked'}, 204
         except Exception as err:
             return {'message': 'Something went wrong', "error": str(err)}, 500
 
@@ -96,7 +96,7 @@ class TokenRefresh(Resource):
     def post(self):
         current_user = get_jwt_identity()
         access_token = create_access_token(identity = current_user)
-        return {'access_token': access_token}
+        return {'access_token': access_token}, 201
 
 
 
@@ -108,7 +108,7 @@ class AllCustomers(Resource):
     
     def delete(self):
         print("Got into delete")
-        return Customer.delete_all()
+        return Customer.delete_all(), 204
 
 #Currently for testing only
 class SecretResource(Resource):
@@ -116,7 +116,7 @@ class SecretResource(Resource):
     def get(self):
         return {
             "answer": 42
-        }
+        }, 201
 
 class GetCid(Resource):
     @jwt_required
