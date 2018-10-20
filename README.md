@@ -32,6 +32,4 @@ Make sure you have installed Git and Docker before doing the commands below.
     * If you are using docker toolbox, the address is  http://192.168.99.100:5052/
     * If you are using the new docker, the address is  http://127.0.0.1:5052/
 
-
-
 ## 
