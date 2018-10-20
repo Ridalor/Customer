@@ -39,7 +39,7 @@ Make sure you have installed Git and Docker before doing the commands below.
 
 With our Api you can registrate, log customers in and get the name, email and Customer Identification Number(cid) of the customer.
 
-__For better explanation and more in-depth usage look at the [Api docs](docs/). If you just want an overview, continue reading.__
+__For better explanation and more in-depth usage look at [the Api docs](docs/). If you just want an overview, continue reading.__
 
 In order to obtain information about the Customer, send a get-request with the raw jwt named "jti" as data(how to do that is in docs linked above). Use the base address in the "setting up dev" section with one of the following URIs attached:
 
@@ -49,7 +49,7 @@ For example 127.0.0.1:5052/customer/cid to get the cid of the currently logged i
 
 #### Get cid
 
-```http
+```
 GET     /customer/cid
 SEND    NONE
 RECIEVE {
@@ -60,7 +60,7 @@ RECIEVE {
 
 #### Get email
 
-```http
+```
 GET     /customer/email
 SEND    NONE
 RECIEVE {
@@ -71,7 +71,7 @@ RECIEVE {
 
 #### Get name
 
-```http
+```
 GET     /customer/name
 SEND    NONE
 RECIEVE {
@@ -80,10 +80,11 @@ RECIEVE {
             "lastName": <lastName>
         }
 ```
+### Registration and login
 
-### To registrate a new customer
+#### To registrate a new customer
 
-```http
+```
 POST    /registration
 SEND    {
             "email": <email>,
@@ -96,9 +97,9 @@ RECIEVE {
         }
 ```
 
-### To log in a customer
+#### To log in a customer
 
-```http
+```
 POST     /login
 SEND    {
             "email": <email>,
@@ -111,9 +112,9 @@ RECIEVE {
             
         }
 ```
-### To log out from access
+#### To log out from access
 
-```http
+```
 POST     /logout/access
 SEND    {
             "Bearer": "access_token <access_token>"
@@ -123,9 +124,9 @@ RECIEVE {
         }
 ```
 
-### To log out from refresh
+#### To log out from refresh
 
-```http
+```
 POST     /logout/refresh
 SEND    {
             "Bearer": "refresh_token <refresh_token>"
