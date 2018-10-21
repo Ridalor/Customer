@@ -76,7 +76,7 @@ class CustomerLogoutAccess(Resource):
         try:
             revoked_token = RevokedTokenModel(jti = jti)
             revoked_token.add()
-            return {'message': 'Access token has been revoked'}, 204
+            return {'message': 'Access token has been revoked'}, 201
         except Exception as err:
             return {'message': 'Something went wrong', "error": str(err)}, 500
 
@@ -87,7 +87,7 @@ class CustomerLogoutRefresh(Resource):
         try:
             revoked_token = RevokedTokenModel(jti = jti)
             revoked_token.add()
-            return {'message': 'Refresh token has been revoked'}, 204
+            return {'message': 'Refresh token has been revoked'}, 201
         except Exception as err:
             return {'message': 'Something went wrong', "error": str(err)}, 500
 
@@ -108,7 +108,7 @@ class AllCustomers(Resource):
     
     def delete(self):
         print("Got into delete")
-        return Customer.delete_all(), 204
+        return Customer.delete_all(), 201
 
 #Currently for testing only
 class SecretResource(Resource):
@@ -124,7 +124,7 @@ class GetCid(Resource):
         current_customer = get_jwt_identity()
         try:
             customer_object = Customer.find_by_email(current_customer)
-            return {"cid": customer_object.cid}
+            return {"cid": customer_object.customer_id}, 201
         except Exception as err:
             return {"message": "Something went wrong on the server", "error": str(err)}, 500
 
