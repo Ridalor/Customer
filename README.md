@@ -45,7 +45,7 @@ __For better explanation and more in-depth usage look at [the Api docs](docs/). 
 
 In order to obtain information about the Customer, send a get-request with the raw jwt named "jti" as data(how to do that is in docs linked above). Use the base address in the "setting up dev" section with one of the following URIs attached:
 
-For example 127.0.0.1:5052/customer/cid to get the cid of the currently logged in customer.
+For example 127.0.0.1:5052/v1/customer/cid to get the cid of the currently logged in customer.
 
 ### Get information about the currently logged in customer
 
