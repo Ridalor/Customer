@@ -1,4 +1,4 @@
-# How to use the Customer Api
+# How to use the Customer Api 
 
 If you want to start using our Api, here is how to get started.
 
