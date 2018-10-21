@@ -4,6 +4,8 @@
 
 Welcome to the Customer Database team. We taking care of registering new customers and logging them in, as well as giving other teams information about the Customer.
 
+Note: Everything here is subject to change!
+
 ## Getting started
 This will come at a later date.
 
@@ -50,7 +52,7 @@ For example 127.0.0.1:5052/customer/cid to get the cid of the currently logged i
 #### Get cid
 
 ```
-GET     /customer/cid
+GET     /v1/cid
 SEND    NONE
 RECIEVE {
             "message": <message>,
@@ -61,7 +63,7 @@ RECIEVE {
 #### Get email
 
 ```
-GET     /customer/email
+GET     /v1/email
 SEND    NONE
 RECIEVE {
             "message": <message>,
@@ -72,7 +74,7 @@ RECIEVE {
 #### Get name
 
 ```
-GET     /customer/name
+GET     /v1/name
 SEND    NONE
 RECIEVE {
             "message": <message>,
@@ -85,7 +87,7 @@ RECIEVE {
 #### To registrate a new customer
 
 ```
-POST    /registration
+POST    /v1/registration
 SEND    {
             "email": <email>,
             "password": <password>
@@ -100,7 +102,7 @@ RECIEVE {
 #### To log in a customer
 
 ```
-POST     /login
+POST     /v1/login
 SEND    {
             "email": <email>,
             "password": <password>
@@ -115,7 +117,7 @@ RECIEVE {
 #### To log out from access
 
 ```
-POST     /logout/access
+POST     /v1/logout/access
 SEND    {
             "Bearer": "access_token <access_token>"
         }
@@ -127,7 +129,7 @@ RECIEVE {
 #### To log out from refresh
 
 ```
-POST     /logout/refresh
+POST     /v1/logout/refresh
 SEND    {
             "Bearer": "refresh_token <refresh_token>"
         }
