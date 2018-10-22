@@ -3,18 +3,33 @@ from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from passlib.context import CryptContext
 from flask_sqlalchemy import SQLAlchemy
+import os
 
 app = Flask(__name__)
 app.debug = True
 
-print("Starting")
+#Getting enviroment variables to avoid having secrets in the code base
+EnvVars = os.environ
+
+#Checking if the Enviroment variables exist, and uses them to connect to database. If they were not found, uses default values
+if "MySQLUserName" in EnvVars and "MySQLPassword" in EnvVars:
+    mysqlAddress = "mysql+pymysql://" + EnvVars["MySQLUserName"] + ":" + EnvVars["MySQLPassword"] + "@127.0.0.1:3352/customer"
+else:
+    print("WARNING: \"MySQLUserName\" and \"MySQLPassword\" environment variables are not set! See the docs for information. Using the default username and password(unsecure!)")
+    mysqlAddress = "mysql+pymysql://root:password@127.0.0.1:3352/customer"
 
 api = Api(app)
 
 #Setting up sqlalchemy
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@127.0.0.1:3310/customer'
+app.config['SQLALCHEMY_DATABASE_URI'] = mysqlAddress
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'some-secret-string'
+
+#Checking if the Enviroment variable exist, and uses that as secret. If they were not found, uses default value
+if "CustomerApiSecret" in EnvVars:
+    app.config['SECRET_KEY'] = EnvVars["CustomerApiSecret"]
+else:
+    print("WARNING: You need to set the \"CustomerApiSecret\" environment variable, see the docs for information. Using the default secret(unsecure!)")
+    app.config['SECRET_KEY'] = "default-secret-key"
 
 db = SQLAlchemy(app)
 
@@ -23,7 +38,13 @@ def create_tables():
     db.create_all()
 
 #Adding jwt
-app.config['JWT_SECRET_KEY'] = 'jwt-secret-string'
+## Checking if the Enviroment variable exist, and uses that as secret. If they were not found, uses default value
+if "CustomerJWTSecret" in EnvVars:
+    app.config['SECRET_KEY'] = EnvVars["CustomerJWTSecret"]
+else:
+    print("WARNING: You need to set the \"CustomerJWTSecret\" environment variable, see the docs for information. Using the default secret(unsecure!)")
+    app.config['SECRET_KEY'] = "default-jwt-secret-key"
+
 jwt = JWTManager(app)
 
 #Setting up blacklist
