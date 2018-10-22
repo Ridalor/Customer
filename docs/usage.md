@@ -6,13 +6,13 @@ _If you want to jump to the code example, click [here](#fullExample)_
 
 ## Getting information about the Customer
 
-> When a customer logs in, a jwt-object is sent to and stored on the client(device of the customer). In order for us to give you information about that Customer, we need the JWT-object to identify the Customer and confirm that they are logged in. 
-
 In order to get information about the customer, send a request with the raw jwt object(which is sent by the client).
+
+> Why? Because when a customer logs in, a jwt-object is sent to and stored on the client(device of the customer). In order for us to give information about that Customer, we need the JWT-object to identify the Customer and confirm that they are logged in. Note: It is possible that in the future, there is no need to send the JWT.
 
 * The different Requests are covered below.
 
-* To send the jwt along with the request take the jwt object named "jti" and send it as data in the request.
+* To send the jwt along with the request, take the jwt object named "jti" and send it as data in the request.
 
 * JWT Example in python with flask:
     ```python
@@ -24,14 +24,15 @@ In order to get information about the customer, send a request with the raw jwt 
         r = requests.get(<address>, {"jti": jti})
     ```
 
-    > If there is no jwt, or the jwt is invalid, the response will be 404 Not Found
+    > If there is no jwt, or the jwt is invalid, the response will be 404 Not Found, which means that no customer is logged in.
 
 ### Get the Customer Identification Number (cid) of the currently logged in customer
 URI: /v1/customer/cid
+
 To get the cid of a customer, send a get request to the docker url specified at the top with this URI: /v1/customer/cid
 The number you get is between 8 and 16 digits long.
 
-> The returned cid is an int. This cid number below(40129339) is just an example.
+> The returned cid is an integer. This cid number below(40129339) is just an example.
 
 * On success, the status code is 201 and you get this json object: 
     ```json
@@ -65,7 +66,8 @@ def get_cid():
     
     # If the status code is 500, an error on our part occured
     if r.status() == 500:
-        return "Server error"
+        return r.json() # Contains "message" and "error" which tell you what happened
+
     #If the status code is 404, there is no logged in customer or the jti sent is invalid
     else if r.status() == 404:
         return "Noone is logged in"
@@ -86,6 +88,7 @@ def get_cid():
 ### Get the email of the currently logged in customer
 URI: /v1/customer/email
 To get the email of the currently logged in user, send a get request to the docker url specified at the top with this URI: /v1/customer/email
+
 > The returned email is a string. The email below is just an example
 
 #### Returns:
@@ -118,7 +121,8 @@ def get_email():
     
     # If the status code is 500, an error on our part occured
     if r.status() == 500:
-        return "Server error"
+        return r.json() # Contains "message" and "error" which tell you what happened
+
     #If the status code is 404, there is no logged in customer or the jti sent is invalid
     else if r.status() == 404:
         return "Noone is logged in"
@@ -138,6 +142,7 @@ def get_email():
 
 ### Get the Name of the currently logged in customer
 URI: /v1/ustomer/name
+
 To get the name of the currently logged in customer, send a get request to the docker url specified at the top with this URI: /v1/customer/name.
 
 > The returned firstName and LastName is a string. The name below is just an example. If the Customer does not have a first and/or last name, it will be an empty string
@@ -176,7 +181,8 @@ def get_name():
     
     # If the status code is 500, an error on our part occured
     if r.status() == 500:
-        return "Server error"
+        return r.json() # Contains "message" and "error" which tell you what happened
+
     #If the status code is 404, there is no logged in customer or the jti sent is invalid
     else if r.status() == 404:
         return "Noone is logged in"
@@ -198,7 +204,7 @@ def get_name():
 
 ## Full example
 
-Here is a full example of how to send requests to our Api:
+Here is a full example of how to get information from our Api:
 
 ```python
 import requests
@@ -211,7 +217,8 @@ def get_cid():
     
     # If the status code is 500, an error on our part occured
     if r.status() == 500:
-        return "Server error"
+        return r.json() # Contains "message" and "error" which tell you what happened
+
     #If the status code is 404, there is no logged in customer or the jti sent is invalid
     else if r.status() == 404:
         return "Noone is logged in"
@@ -231,7 +238,8 @@ def get_email():
     
     # If the status code is 500, an error on our part occured
     if r.status() == 500:
-        return "Server error"
+        return r.json() # Contains "message" and "error" which tell you what happened
+
     #If the status code is 404, there is no logged in customer or the jti sent is invalid
     else if r.status() == 404:
         return "Noone is logged in"
@@ -251,7 +259,8 @@ def get_name():
     
     # If the status code is 500, an error on our part occured
     if r.status() == 500:
-        return "Server error"
+        return r.json() # Contains "message" and "error" which tell you what happened
+
     #If the status code is 404, there is no logged in customer or the jti sent is invalid
     else if r.status() == 404:
         return "Noone is logged in"
