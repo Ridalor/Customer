@@ -52,7 +52,7 @@ For example 127.0.0.1:5052/v1/customer/cid to get the cid of the currently logge
 #### Get cid
 
 ```
-GET     /v1/cid
+GET     /v1/customer/cid
 SEND    NONE
 RECIEVE {
             "message": <message>,
@@ -63,7 +63,7 @@ RECIEVE {
 #### Get email
 
 ```
-GET     /v1/email
+GET     /v1/customer/email
 SEND    NONE
 RECIEVE {
             "message": <message>,
@@ -74,7 +74,7 @@ RECIEVE {
 #### Get name
 
 ```
-GET     /v1/name
+GET     /v1/customer/name
 SEND    NONE
 RECIEVE {
             "message": <message>,
