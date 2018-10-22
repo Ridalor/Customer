@@ -26,7 +26,15 @@ This will come at a later date.
 ## Setting up Dev
 Make sure you have installed Git and Docker before doing the commands below.
 
-* Clone the repository from github so you get all the necessary files
+1. Set Environment variables
+    You need to set the following Environment variables. The keys needs to be exactly as written here, the vaules can be anything.
+    How to set Environment variables is described here: https://www.twilio.com/blog/2017/01/how-to-set-environment-variables.html
+    * MySQLUsername
+    * MySQLPassword
+    * CustomerApiSecret
+    * CustomerJWTSecret
+
+1. Clone the repository from github so you get all the necessary files
 
     ```shell
     git clone https://github.com/DAT210/Customer.git
