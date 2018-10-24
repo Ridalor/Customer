@@ -139,3 +139,11 @@ class GetName(Resource):
     def get(self):
         #TODO: Implement
         return {"message": "This has not been implemented yet, coming soon!"}
+
+class GetNumberCustomers(Resource):
+    def get(self):
+        try:
+            number = Customer.number_of_customers()
+            return {"message": "The number of customers is " + str(number) + "", "number": number}, 201
+        except Exception as err:
+            return {"message": "Something went wrong on the server", "error": str(err)}, 500
