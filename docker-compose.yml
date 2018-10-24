@@ -5,7 +5,7 @@ services:
     depends_on: :
       - "db"
     ports:
-      - "5052:5000"
+      - "5052:5052"
 
   db:
     image: mysql:5.7

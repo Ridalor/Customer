@@ -66,5 +66,5 @@ api.add_resource(resources.GetName, '/v1/customer/name')
 api.add_resource(resources.SecretResource, '/secret')
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=True)
+    app.run(port=5052, host="0.0.0.0", debug=True)
 
