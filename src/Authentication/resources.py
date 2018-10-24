@@ -27,9 +27,9 @@ class CustomerRegistration(Resource):
         
         # Making a new model with the email and password provided
         new_customer = Customer(
-            cid = cid,
-            email = data['email'],
-            password = data["password"]
+            customer_id = cid,
+            customer_email = data['email'],
+            customer_password = data["password"]
         )
         try:
             # Saving the new user to the database. the method is located in models.py
@@ -43,9 +43,9 @@ class CustomerRegistration(Resource):
                 'message': 'Customer {} was created'.format( data['email']),
                 'access_token': access_token,
                 'refresh_token': refresh_token
-            }
+            }, 201
         except Exception as err:
-            return {'message': 'Something went wrong, try restarting the server', "error": err}, 500
+            return {'message': 'Something went wrong', "error": str(err)}, 500
 
 class CustomerLogin(Resource):
     def post(self):
@@ -64,7 +64,7 @@ class CustomerLogin(Resource):
                 'message': 'Logged in as {}'.format(current_customer.email),
                 'access_token': access_token,
                 'refresh_token': refresh_token
-            }
+            }, 201
         else:
             return {'message': 'Wrong email or password'}
 
@@ -76,9 +76,9 @@ class CustomerLogoutAccess(Resource):
         try:
             revoked_token = RevokedTokenModel(jti = jti)
             revoked_token.add()
-            return {'message': 'Access token has been revoked'}
-        except:
-            return {'message': 'Something went wrong'}, 500
+            return {'message': 'Access token has been revoked'}, 201
+        except Exception as err:
+            return {'message': 'Something went wrong', "error": str(err)}, 500
 
 class CustomerLogoutRefresh(Resource):
     @jwt_refresh_token_required
@@ -87,16 +87,16 @@ class CustomerLogoutRefresh(Resource):
         try:
             revoked_token = RevokedTokenModel(jti = jti)
             revoked_token.add()
-            return {'message': 'Refresh token has been revoked'}
-        except:
-            return {'message': 'Something went wrong'}, 500
+            return {'message': 'Refresh token has been revoked'}, 201
+        except Exception as err:
+            return {'message': 'Something went wrong', "error": str(err)}, 500
 
 class TokenRefresh(Resource):
     @jwt_refresh_token_required
     def post(self):
         current_user = get_jwt_identity()
         access_token = create_access_token(identity = current_user)
-        return {'access_token': access_token}
+        return {'access_token': access_token}, 201
 
 
 
@@ -108,7 +108,7 @@ class AllCustomers(Resource):
     
     def delete(self):
         print("Got into delete")
-        return Customer.delete_all()
+        return Customer.delete_all(), 201
 
 #Currently for testing only
 class SecretResource(Resource):
@@ -116,7 +116,7 @@ class SecretResource(Resource):
     def get(self):
         return {
             "answer": 42
-        }
+        }, 201
 
 class GetCid(Resource):
     @jwt_required
@@ -124,6 +124,18 @@ class GetCid(Resource):
         current_customer = get_jwt_identity()
         try:
             customer_object = Customer.find_by_email(current_customer)
-            return {"cid": customer_object.cid}
+            return {"cid": customer_object.customer_id}, 201
         except Exception as err:
-            return {"message": "Something went wrong on the server, check your request or contact the Customer team", "err": err}, 500
+            return {"message": "Something went wrong on the server", "error": str(err)}, 500
+
+class GetEmail(Resource):
+    @jwt_required
+    def get(self):
+        #TODO: Implement
+        return {"message": "This has not been implemented yet, coming soon!"}
+
+class GetName(Resource):
+    @jwt_required
+    def get(self):
+        #TODO: Implement
+        return {"message": "This has not been implemented yet, coming soon!"}
