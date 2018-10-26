@@ -4,30 +4,36 @@ If you want to start using our Api, here is how to get started.
 
 _If you want to jump to the code example, click [here](#fullExample)_
 
+The IP address is as follows:
+* If you are using docker toolbox, the address is  http://192.168.99.100:5052/
+* If you are using the new docker, the address is  http://127.0.0.1:5052/
+
 ## Getting information about the Customer
 
-In order to get information about the customer, send a request with the raw jwt object(which is sent by the client).
+In order to get information about the customer, send a request with the authorization header(which contains the customer's jwt) from the client request.
 
-> Why? Because when a customer logs in, a jwt-object is sent to and stored on the client(device of the customer). In order for us to give information about that Customer, we need the JWT-object to identify the Customer and confirm that they are logged in. Note: It is possible that in the future, there is no need to send the JWT.
+> Why? Because when a customer logs in, a jwt-object is sent to and stored on the client(device of the customer). In order for us to give information about that Customer, we need the JWT-object to identify the Customer and confirm that they are logged in. Note: It is possible that in the future, there will be no need to send the header.
 
 * The different Requests are covered below.
 
-* To send the jwt along with the request, take the jwt object named "jti" and send it as data in the request.
+* To send the authorization header with the request, make a dict with the authorization from the request you recieved.
 
 * JWT Example in python with flask:
     ```python
     import requests
-    from flask_jwt_extended import get_raw_jwt
+    from flask import request
+
+    def get_headers():
+        return {"Authorization": request.headers.get("Authorization")}
 
     def main():
-        jti = get_raw_jwt()["jti"]
-        r = requests.get(<address>, {"jti": jti})
+        r = requests.get(<address>, headers= get_headers())
     ```
 
-    > If there is no jwt, or the jwt is invalid, the response will be 404 Not Found, which means that no customer is logged in.
+    > If there is no header, or the jwt in the header is invalid, the response will be 404 Not Found, which means that the client is not logged in as.
 
 ### Get the Customer Identification Number (cid) of the currently logged in customer
-URI: /v1/customer/cid
+URI: /v1/customer/cid/
 
 To get the cid of a customer, send a get request to the docker url specified at the top with this URI: /v1/customer/cid
 The number you get is between 8 and 16 digits long.
@@ -55,14 +61,18 @@ The number you get is between 8 and 16 digits long.
 
 ```python
 import requests
-from flask_jwt_extended import get_raw_jwt
+from flask import request
+
+def get_headers():
+    return {"Authorization": request.headers.get("Authorization")}
+
 
 def get_cid():
     # Getting the jwt with the customer identifier
     jti = get_raw_jwt()
 
-    # Sending the get-request with jti
-    r = requests.get("127.0.0.1:5052/v1/customer/cid", {"jti": jti})
+    # Sending the get-request with header required
+    r = requests.get("127.0.0.1:5052/v1/customer/cid", headers=get_headers())
     
     # If the status code is 500, an error on our part occured
     if r.status() == 500:
@@ -87,6 +97,7 @@ def get_cid():
 
 ### Get the email of the currently logged in customer
 URI: /v1/customer/email
+
 To get the email of the currently logged in user, send a get request to the docker url specified at the top with this URI: /v1/customer/email
 
 > The returned email is a string. The email below is just an example
@@ -110,14 +121,18 @@ To get the email of the currently logged in user, send a get request to the dock
 * Example in python:
 ```python
 import requests
-from flask_jwt_extended import get_raw_jwt
+from flask import request
+
+def get_headers():
+    return {"Authorization": request.headers.get("Authorization")}
+
 
 def get_email():
     # Getting the jwt with the customer identifier
     jti = get_raw_jwt()["jti"]
     
-    # Sending the get-request with jti
-    r = requests.get("127.0.0.1:5052/v1/customer/email", {"jti": jti})
+    # Sending the get-request with the header required
+    r = requests.get("127.0.0.1:5052/v1/customer/email", headers=get_headers()
     
     # If the status code is 500, an error on our part occured
     if r.status() == 500:
@@ -171,13 +186,17 @@ To get the name of the currently logged in customer, send a get request to the d
 * Example in python:
 ```python
 import requests
-from flask_jwt_extended import get_raw_jwt
+from flask import request
 
+def get_headers():
+    return {"Authorization": request.headers.get("Authorization")}
+
+    
 def get_name():
     jti = get_raw_jti()["jti"]
     
-    # Sending the get-request with jti
-    r = requests.get("127.0.0.1:5052/v1/customer/name", {"jti": jti})
+    # Sending the get-request with the header required
+    r = requests.get("127.0.0.1:5052/v1/customer/name", headers=get_headers())
     
     # If the status code is 500, an error on our part occured
     if r.status() == 500:
@@ -208,12 +227,13 @@ Here is a full example of how to get information from our Api:
 
 ```python
 import requests
-from flask_jwt_extended import get_raw_jwt
 
+def get_headers():
+    return {"Authorization": request.headers.get("Authorization")}
 
 def get_cid():
     # Sending the get-request with jti
-    r = requests.get("127.0.0.1:5052/v1/customer/cid", {"jti": get_raw_jwt()})
+    r = requests.get("127.0.0.1:5052/v1/customer/cid", headers=get_headers())
     
     # If the status code is 500, an error on our part occured
     if r.status() == 500:
@@ -234,7 +254,7 @@ def get_cid():
 
 def get_email():
     # Sending the get-request with jti
-    r = requests.get("127.0.0.1:5052/v1/customer/email", {"jti": get_raw_jwt()})
+    r = requests.get("127.0.0.1:5052/v1/customer/email", headers=get_headers())
     
     # If the status code is 500, an error on our part occured
     if r.status() == 500:
@@ -255,7 +275,7 @@ def get_email():
 
 def get_name():
     # Sending the get-request with jti
-    r = requests.get("127.0.0.1:5052/v1/customer/name", {"jti": get_raw_jwt()})
+    r = requests.get("127.0.0.1:5052/v1/customer/name", headers=get_headers())
     
     # If the status code is 500, an error on our part occured
     if r.status() == 500:
