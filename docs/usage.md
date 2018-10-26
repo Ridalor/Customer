@@ -223,7 +223,7 @@ def get_name():
 ## Full example
 
 Here is a full example of how to get information from our Api:
-The example assumes you got a request from a client that is logged in. 
+The example assumes you got a request from a client.
 
 ```python
 from flask import Flask, request
