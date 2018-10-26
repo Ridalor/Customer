@@ -116,6 +116,11 @@ class GetCid(Resource):
         try:
             # Getting the cid from the jwt.
             current_customer = get_jwt_identity()
+            
+            # Checks if no object got returned in the query, then return 401 Unauthorized.
+            if len(customer_object) == 0:
+                return {"message": "Invalid JWT, not logged in or invalid token"}, 401
+
             return {"message": "The cid was found", "cid": current_customer}, 201
         except Exception as err:
             return {"message": "Something went wrong on the server", "error": str(err)}, 500
@@ -128,6 +133,11 @@ class GetEmail(Resource):
             current_customer = get_jwt_identity()
             # Getting the customer from the database through the model in models.py
             customer_object= Customer.find_by_cid(current_customer)
+
+            # Checks if no object got returned in the query, then return 401 Unauthorized.
+            if len(customer_object) == 0:
+                return {"message": "Invalid JWT, not logged in or invalid token"}, 401
+            
             return {"message": "Email of the customer was found", "email": customer_object.customer_email}, 201
         except Exception as err:
             return {"message": "Something went wrong on the server", "error": str(err)}, 500
@@ -138,6 +148,10 @@ class GetName(Resource):
         try:
             # Getting the cid from the jwt.
             current_customer = get_jwt_identity()
+
+            # Checks if no object got returned in the query, then return 401 Unauthorized.
+            if len(customer_object) == 0:
+                return {"message": "Invalid JWT, not logged in or invalid token"}, 401
 
             # Getting the customer from the database through the model in models.py
             customer_object= Customer.find_by_cid(currenr_customer)
