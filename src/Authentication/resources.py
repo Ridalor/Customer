@@ -36,8 +36,8 @@ class CustomerRegistration(Resource):
             new_customer.save_to_db()
 
             # Making tokens so the customer is logged in
-            access_token = create_access_token(identity = data['email'])
-            refresh_token = create_refresh_token(identity = data['email'])
+            access_token = create_access_token(identity = cid)
+            refresh_token = create_refresh_token(identity = cid)
 
             return {
                 'message': 'Customer {} was created'.format( data['email']),
@@ -57,11 +57,11 @@ class CustomerLogin(Resource):
             return {'message': 'User {} doesn\'t exist'.format(data['email'])}
         
         # Checking password, if correct, it makes tokens to log the customer in
-        if Customer.verify_hash(data["password"], current_customer.password):
-            access_token = create_access_token(identity = data['email'])
-            refresh_token = create_refresh_token(identity = data['email'])
+        if Customer.verify_hash(data["password"], current_customer.customer_password):
+            access_token = create_access_token(identity = current_customer.customer_id)
+            refresh_token = create_refresh_token(identity = current_customer.customer_id)
             return {
-                'message': 'Logged in as {}'.format(current_customer.email),
+                'message': 'Logged in as {}'.format(current_customer.customer_email),
                 'access_token': access_token,
                 'refresh_token': refresh_token
             }, 201
@@ -110,32 +110,37 @@ class AllCustomers(Resource):
         print("Got into delete")
         return Customer.delete_all(), 201
 
-#Currently for testing only
-class SecretResource(Resource):
-    @jwt_required
-    def get(self):
-        return {
-            "answer": 42
-        }, 201
-
 class GetCid(Resource):
     @jwt_required
     def get(self):
-        current_customer = get_jwt_identity()
         try:
-            customer_object = Customer.find_by_email(current_customer)
-            return {"cid": customer_object.customer_id}, 201
+            # Getting the cid from the jwt.
+            current_customer = get_jwt_identity()
+            return {"message": "The cid was found", "cid": current_customer}, 201
         except Exception as err:
             return {"message": "Something went wrong on the server", "error": str(err)}, 500
 
 class GetEmail(Resource):
     @jwt_required
     def get(self):
-        #TODO: Implement
-        return {"message": "This has not been implemented yet, coming soon!"}
+        try:
+            # Getting the cid from the jwt.
+            current_customer = get_jwt_identity()
+            # Getting the customer from the database through the model in models.py
+            customer_object= Customer.find_by_cid(current_customer)
+            return {"message": "Email of the customer was found", "email": customer_object.customer_email}, 201
+        except Exception as err:
+            return {"message": "Something went wrong on the server", "error": str(err)}, 500
 
 class GetName(Resource):
     @jwt_required
     def get(self):
-        #TODO: Implement
-        return {"message": "This has not been implemented yet, coming soon!"}
+        try:
+            # Getting the cid from the jwt.
+            current_customer = get_jwt_identity()
+
+            # Getting the customer from the database through the model in models.py
+            customer_object= Customer.find_by_cid(currenr_customer)
+            return {"message": "Name of the customer was found", "firstName": customer_object.customer_first_name, "lastName": customer_object.customer_last_name}, 201
+        except Exception as err:
+            return {"message": "Something went wrong on the server", "error": str(err)}, 500
