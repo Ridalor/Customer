@@ -29,10 +29,9 @@ Make sure you have installed Git and Docker before doing the commands below.
 1. Set Environment variables
     You need to set the following Environment variables. The keys needs to be exactly as written here, the vaules can be anything.
     How to set Environment variables is described here: https://www.twilio.com/blog/2017/01/how-to-set-environment-variables.html
-    * MySQLUsername
+
     * MySQLPassword
-    * CustomerApiSecret
-    * CustomerJWTSecret
+    * CustomerSecret
 
 1. Clone the repository from github so you get all the necessary files
 
@@ -47,103 +46,16 @@ Make sure you have installed Git and Docker before doing the commands below.
 
 ## Api Reference
 
-With our Api you can registrate, log customers in and get the name, email and Customer Identification Number(cid) of the customer.
+With our Api you can get the name, email and Customer Identification Number(cid) of the customer, more will come in the future.
 
-__For better explanation and more in-depth usage look at [the Api docs](docs/). If you just want an overview, continue reading.__
+If you really want to get quickly started see our [full example here](docs/usage.md#fullExample).
+To go straight to how to use the api: [Usage](docs/usage.md).
+Look at the [Api docs](docs/) for more information.
 
-In order to obtain information about the Customer, send a get-request with the raw jwt named "jti" as data(how to do that is in docs linked above). Use the base address in the "setting up dev" section with one of the following URIs attached:
+In order to obtain information about the Customer, send a get-request with the authorization header you got from the client as a authorization header(how to do that is in docs linked above). Use the base address in the "setting up dev" section with one of the following URIs attached:
 
-For example 127.0.0.1:5052/v1/customer/cid to get the cid of the currently logged in customer.
+* /v1/customer/cid
+* /v1/customer/email
+* /v1/customer/name
 
-### Get information about the currently logged in customer
-
-#### Get cid
-
-```
-GET     /v1/customer/cid
-SEND    NONE
-RECIEVE {
-            "message": <message>,
-            "cid": <cid>
-        }
-```
-
-#### Get email
-
-```
-GET     /v1/customer/email
-SEND    NONE
-RECIEVE {
-            "message": <message>,
-            "email": <email>
-        }
-```
-
-#### Get name
-
-```
-GET     /v1/customer/name
-SEND    NONE
-RECIEVE {
-            "message": <message>,
-            "firstName": <firstName>,
-            "lastName": <lastName>
-        }
-```
-### Registration and login
-
-#### To registrate a new customer
-
-```
-POST    /v1/registration
-SEND    {
-            "email": <email>,
-            "password": <password>
-        }
-RECIEVE {
-            "message": <message>,
-            "access_token": <access_token>,
-            "refresh_token": <refresh_token>
-        }
-```
-
-#### To log in a customer
-
-```
-POST     /v1/login
-SEND    {
-            "email": <email>,
-            "password": <password>
-        }
-RECIEVE {
-            "message": <message>,
-            "access_token": <access_token>,
-            "refresh_token": <refresh_token>
-            
-        }
-```
-#### To log out from access
-
-```
-POST     /v1/logout/access
-SEND    {
-            "Bearer": "access_token <access_token>"
-        }
-RECIEVE {
-            "message": <message>
-        }
-```
-
-#### To log out from refresh
-
-```
-POST     /v1/logout/refresh
-SEND    {
-            "Bearer": "refresh_token <refresh_token>"
-        }
-RECIEVE {
-            "message": <message>
-        }
-```
-
-For more information about sending requests and the response look at the docs here: [Api docs](docs/)
+> For example, if you are using the new docker, 127.0.0.1:5052/v1/customer/cid to get the cid of the currently logged in customer.

@@ -5,10 +5,10 @@ Welcome to the documentation for Customer Api.
 __For a full code example of getting information about a customer, see [Full example](usage.md#fullExample)__
 
 ## Links
-* Table of contents:            [TOC](TOC.md)
-* Frequently asked questions:   [FAQ](faq.md)
-* Misc:                         [Misc](misc.md)
-* How to use the Api:           [Usage](usage.md)
+* [Table of contents](TOC.md)
+* [Frequently asked questions](faq.md)
+* [Misc](misc.md)
+* [How to use the Api](usage.md)
 
 
 ## Base address to use when interacting with the Customer Api
