@@ -2,7 +2,7 @@
 
 If you want to start using our Api, here is how to get started.
 
-_If you want to jump to the code example, click [here](#fullExample)_
+_If you want to jump to the code example, click [here](#full-example)_
 
 The IP address is as follows:
 * If you are using docker toolbox, the address is  http://192.168.99.100:5052/
@@ -156,11 +156,11 @@ def get_email():
 ```
 
 ### Get the Name of the currently logged in customer
-URI: /v1/ustomer/name
+URI: /v1/customer/name
 
 To get the name of the currently logged in customer, send a get request to the docker url specified at the top with this URI: /v1/customer/name.
 
-> The returned firstName and LastName is a string. The name below is just an example. If the Customer does not have a first and/or last name, it will be an empty string
+> The returned firstName and LastName are strings. The name below is just an example. If the Customer does not have a first and/or last name, it will be an empty string
 
 #### Returns
 
@@ -191,7 +191,7 @@ from flask import request
 def get_headers():
     return {"Authorization": request.headers.get("Authorization")}
 
-    
+
 def get_name():
     jti = get_raw_jti()["jti"]
     
@@ -219,20 +219,24 @@ def get_name():
     > {"firstName": <first name>, "lastName": <last name>}
 
 ```
-<a name="fullExample"></a>
 
 ## Full example
 
 Here is a full example of how to get information from our Api:
+The example assumes you got a request from a client that is logged in. 
 
 ```python
+from flask import Flask, request
 import requests
+
+app = Flask(__name__)
 
 def get_headers():
     return {"Authorization": request.headers.get("Authorization")}
 
+@app.route("/cid")
 def get_cid():
-    # Sending the get-request with jti
+    # Sending the get-request with the header required
     r = requests.get("127.0.0.1:5052/v1/customer/cid", headers=get_headers())
     
     # If the status code is 500, an error on our part occured
@@ -240,20 +244,20 @@ def get_cid():
         return r.json() # Contains "message" and "error" which tell you what happened
 
     #If the status code is 404, there is no logged in customer or the jti sent is invalid
-    else if r.status() == 404:
+    elif r.status() == 404:
         return "Noone is logged in"
     
     # The message is recieved with every request and tell you what happened
     print(r.json()["message"])
-    > "Cid for the current customer was found"
+    # "Cid for the current customer was found"
     
     # The cid from the response is gotten like this
     cid = r.json()["cid"]
     return cid
 
-
+@app.route("/email")
 def get_email():
-    # Sending the get-request with jti
+    # Sending the get-request with the header required
     r = requests.get("127.0.0.1:5052/v1/customer/email", headers=get_headers())
     
     # If the status code is 500, an error on our part occured
@@ -261,20 +265,20 @@ def get_email():
         return r.json() # Contains "message" and "error" which tell you what happened
 
     #If the status code is 404, there is no logged in customer or the jti sent is invalid
-    else if r.status() == 404:
+    elif r.status() == 404:
         return "Noone is logged in"
 
     # The message is recieved with every request and tell you what happened
     print(r.json()["message"])
-    > "Email of current Customer was found"
+    # "Email of current Customer was found"
     
     # The email from the response is gotten like this
     email = r.json()["email"]
     return email
 
-
+@app.route("/name")
 def get_name():
-    # Sending the get-request with jti
+    # Sending the get-request with the header required
     r = requests.get("127.0.0.1:5052/v1/customer/name", headers=get_headers())
     
     # If the status code is 500, an error on our part occured
@@ -282,27 +286,18 @@ def get_name():
         return r.json() # Contains "message" and "error" which tell you what happened
 
     #If the status code is 404, there is no logged in customer or the jti sent is invalid
-    else if r.status() == 404:
+    elif r.status() == 404:
         return "Noone is logged in"
     
     # The message is recieved with every request and tell you what happened
     print(r.json()["message"])
-    > "The Name of the current customer was found"
+    # "The Name of the current customer was found"
 
     # The name consist of firstName and Last name, we can organize them in a dict like this
     name["firstName"] = r.json()["firstName"]
     name["lastName"] = r.json()["lastName"]
     return name
 
-def main():
-    # Use the functions above to get the information
-    cid = get_cid()
-    > 40129339
-
-    email = get_email()
-    > "TestCustomer1@test.com"
-
-    name = get_name()
-    > {"firstName": "Test", "lastName": "Customer"}
-
+if __name__ == "__main__":
+    app.run(port=5002)
 ```

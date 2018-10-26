@@ -48,8 +48,10 @@ Make sure you have installed Git and Docker before doing the commands below.
 
 With our Api you can get the name, email and Customer Identification Number(cid) of the customer, more will come in the future.
 
-If you really want to get quickly started see our [full example here](docs/usage.md#fullExample).
+If you really want to get quickly started see our [full example here](docs/usage.md#full-example).
+
 To go straight to how to use the api: [Usage](docs/usage.md).
+
 Look at the [Api docs](docs/) for more information.
 
 In order to obtain information about the Customer, send a get-request with the authorization header you got from the client as a authorization header(how to do that is in docs linked above). Use the base address in the "setting up dev" section with one of the following URIs attached:
