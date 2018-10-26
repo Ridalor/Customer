@@ -30,7 +30,7 @@ In order to get information about the customer, send a request with the authoriz
         r = requests.get(<address>, headers= get_headers())
     ```
 
-    > If there is no header, or the jwt in the header is invalid, the response will be 404 Not Found, which means that the client is not logged in as.
+    > If there is no header, or the jwt in the header is invalid, the response will be 401 Not Found, which means that the client is not logged in as.
 
 ### Get the Customer Identification Number (cid) of the currently logged in customer
 URI: /v1/customer/cid/
@@ -78,8 +78,8 @@ def get_cid():
     if r.status() == 500:
         return r.json() # Contains "message" and "error" which tell you what happened
 
-    #If the status code is 404, there is no logged in customer or the jti sent is invalid
-    else if r.status() == 404:
+    #If the status code is 401, there is no logged in customer or the jwt sent is invalid
+    else if r.status() == 401:
         return "Noone is logged in"
     
     # The message is recieved with every request and tell you what happened
@@ -138,8 +138,8 @@ def get_email():
     if r.status() == 500:
         return r.json() # Contains "message" and "error" which tell you what happened
 
-    #If the status code is 404, there is no logged in customer or the jti sent is invalid
-    else if r.status() == 404:
+    #If the status code is 401, there is no logged in customer or the jwt sent is invalid
+    else if r.status() == 401:
         return "Noone is logged in"
     
     # The message is recieved with every request and tell you what happened
@@ -202,8 +202,8 @@ def get_name():
     if r.status() == 500:
         return r.json() # Contains "message" and "error" which tell you what happened
 
-    #If the status code is 404, there is no logged in customer or the jti sent is invalid
-    else if r.status() == 404:
+    #If the status code is 401, there is no logged in customer or the jwt sent is invalid
+    else if r.status() == 401:
         return "Noone is logged in"
     
     # The message is recieved with every request and tell you what happened
@@ -243,8 +243,8 @@ def get_cid():
     if r.status() == 500:
         return r.json() # Contains "message" and "error" which tell you what happened
 
-    #If the status code is 404, there is no logged in customer or the jti sent is invalid
-    elif r.status() == 404:
+    #If the status code is 401, there is no logged in customer or the jwt sent is invalid
+    elif r.status() == 401:
         return "Noone is logged in"
     
     # The message is recieved with every request and tell you what happened
@@ -264,8 +264,8 @@ def get_email():
     if r.status() == 500:
         return r.json() # Contains "message" and "error" which tell you what happened
 
-    #If the status code is 404, there is no logged in customer or the jti sent is invalid
-    elif r.status() == 404:
+    #If the status code is 401, there is no logged in customer or the jwt sent is invalid
+    elif r.status() == 401:
         return "Noone is logged in"
 
     # The message is recieved with every request and tell you what happened
@@ -285,8 +285,8 @@ def get_name():
     if r.status() == 500:
         return r.json() # Contains "message" and "error" which tell you what happened
 
-    #If the status code is 404, there is no logged in customer or the jti sent is invalid
-    elif r.status() == 404:
+    #If the status code is 401, there is no logged in customer or the jwt sent is invalid
+    elif r.status() == 401:
         return "Noone is logged in"
     
     # The message is recieved with every request and tell you what happened
