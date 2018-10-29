@@ -47,7 +47,7 @@ In order to get information about the customer, send a request with the authoriz
     * More will come
 
 ### Get the Customer Identification Number (cid) of the currently logged in customer
-__URI: /v1/customer/cid/__
+__GET: /v1/customer/cid/__
 
 To get the cid of a customer, send a get request to the docker url specified at the top with this URI: /v1/customer/cid
 The number you get is 8 digits long(might change in the future).
@@ -110,7 +110,7 @@ def get_cid():
 ```
 
 ### Get the email of the currently logged in customer
-__URI: /v1/customer/email__
+__GET: /v1/customer/email__
 
 To get the email of the currently logged in user, send a get request to the docker url specified at the top with this URI: /v1/customer/email
 
@@ -170,7 +170,7 @@ def get_email():
 ```
 
 ### Get the Name of the currently logged in customer
-__URI: /v1/customer/name__
+__GET: /v1/customer/name__
 
 To get the name of the currently logged in customer, send a get request to the docker url specified at the top with this URI: /v1/customer/name.
 
@@ -233,6 +233,64 @@ def get_name():
     > {"firstName": <first name>, "lastName": <last name>}
 
 ```
+## __The following section is for testing in the development phase only__
+__The following endpoints will be removed before production__
+
+### Get all customers in the database
+__GET: /v1/customers__
+
+To get everything from all customers, send a get request to the docker url specified at the top with this URI: /v1/customer/name.
+
+> It returns every field of every customer in json
+
+#### Returns
+
+* On success, the status code is 200 and you get this json object:
+
+    In this example the Customer's name is "Test Customer".
+    ```json
+       {
+    "customers": [
+        {
+            "email": "test@testing.com",
+            "firstName": "Test",
+            "lastName": "Customer",
+            "password": "<hashed_password>"
+        },
+        {
+            "email": "test1@testing.com",
+            "firstName": null,
+            "lastName": "Cust",
+            "password": "<hashed_password>"
+        }
+    ]
+}
+    ```
+### Delete all customers in the database
+__DELETE: /v1/customers__
+
+To delete every customer in the database, send a DELETE request to the docker url specified at the top with this URI: /v1/customer/name.
+
+> NOTE: This really do delete every customer in the database. This request will of course be removed before production.
+
+#### Returns
+
+* On success, the status code is 200 and you get this json object:
+
+    In this example the Customer's name is "Test Customer".
+    ```json
+    {
+        "message": "X row(s) deleted"
+    }
+    ```
+* On failure on the server, the status code is 500, and you get this json object:
+
+    ```json
+       {
+           "message": "Something went wrong", 
+           "error": "<Error string>"
+       }
+    ```
 
 ## Full example
 
