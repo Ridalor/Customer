@@ -9,7 +9,8 @@ parser = reqparse.RequestParser()
 parser.add_argument('email', help = 'This field cannot be blank', required = True)
 parser.add_argument('password', help = 'This field cannot be blank', required = True)
 
-
+# Registration
+## URI: /registration
 class CustomerRegistration(Resource):
     def post(self):
         data = parser.parse_args()
@@ -23,7 +24,10 @@ class CustomerRegistration(Resource):
         #TODO: Improve this \/
         cid = random.randint(10000000, 99999999)
         while Customer.find_by_cid(cid):
-            cid += 1
+            if cid >= 99999999:
+                cid = 10000000
+            else:
+                cid += 1
         
         # Making a new model with the email and password provided
         new_customer = Customer(
@@ -45,8 +49,12 @@ class CustomerRegistration(Resource):
                 'refresh_token': refresh_token
             }, 201
         except Exception as err:
-            return {'message': 'Something went wrong', "error": str(err)}, 500
+            return {'message': 'Something went wrong', 
+                "error": str(err)
+                }, 500
 
+# Login
+## URI: /login
 class CustomerLogin(Resource):
     def post(self):
         data = parser.parse_args()
@@ -64,10 +72,12 @@ class CustomerLogin(Resource):
                 'message': 'Logged in as {}'.format(current_customer.customer_email),
                 'access_token': access_token,
                 'refresh_token': refresh_token
-            }, 201
+            }, 202
         else:
-            return {'message': 'Wrong email or password'}
+            return {'message': 'Wrong email or password'}, 401
 
+#Logout access
+## URI: /logout/access
 class CustomerLogoutAccess(Resource):
     # Requires a jwt object to run, which basically means that the customer must be logged in to log out(which makes sense)
     @jwt_required
@@ -76,10 +86,14 @@ class CustomerLogoutAccess(Resource):
         try:
             revoked_token = RevokedTokenModel(jti = jti)
             revoked_token.add()
-            return {'message': 'Access token has been revoked'}, 201
+            return {'message': 'Access token has been revoked'}, 200
         except Exception as err:
-            return {'message': 'Something went wrong', "error": str(err)}, 500
+            return {'message': 'Something went wrong', 
+                "error": str(err)
+                }, 500
 
+# Logout refresh
+## URI: /logout/refresh
 class CustomerLogoutRefresh(Resource):
     @jwt_refresh_token_required
     def post(self):
@@ -87,10 +101,14 @@ class CustomerLogoutRefresh(Resource):
         try:
             revoked_token = RevokedTokenModel(jti = jti)
             revoked_token.add()
-            return {'message': 'Refresh token has been revoked'}, 201
+            return {'message': 'Refresh token has been revoked'}, 200
         except Exception as err:
-            return {'message': 'Something went wrong', "error": str(err)}, 500
+            return {'message': 'Something went wrong', 
+                "error": str(err)
+                }, 500
 
+# Refresh access token with refresh token
+## URI: /token/refresh
 class TokenRefresh(Resource):
     @jwt_refresh_token_required
     def post(self):
@@ -104,44 +122,61 @@ class TokenRefresh(Resource):
 ## TODO: (IMPORTANTE) Delete "AllCustomers" class before production!
 class AllCustomers(Resource):
     def get(self):
-        return Customer.return_all()
+        return Customer.return_all(), 200
     
     def delete(self):
         print("Got into delete")
-        return Customer.delete_all(), 201
+        return Customer.delete_all(), 200
 
+
+# The following classes are for the Api
+## URI: /v1/customer/cid
 class GetCid(Resource):
     @jwt_required
     def get(self):
         try:
             # Getting the cid from the jwt.
             current_customer = get_jwt_identity()
-            
+
+            # Getting the customer from the database through the model in models.py
+            customer_object = Customer.find_by_cid(current_customer)
+
             # Checks if no object got returned in the query, then return 401 Unauthorized.
-            if len(customer_object) == 0:
-                return {"message": "Invalid JWT, not logged in or invalid token"}, 401
+            if customer_object.customer_id != None:
+                return {"message": "Invalid cid. The customer doesnt exist in our database"}, 401
 
-            return {"message": "The cid was found", "cid": current_customer}, 201
+            return {"message": "The cid was found", 
+                "cid": current_customer
+                }, 202
+
         except Exception as err:
-            return {"message": "Something went wrong on the server", "error": str(err)}, 500
+            return {"message": "Something went wrong on the server", 
+                "error": str(err)
+                }, 500
 
+## URI: /v1/customer/email
 class GetEmail(Resource):
     @jwt_required
     def get(self):
         try:
             # Getting the cid from the jwt.
             current_customer = get_jwt_identity()
+
             # Getting the customer from the database through the model in models.py
             customer_object= Customer.find_by_cid(current_customer)
 
             # Checks if no object got returned in the query, then return 401 Unauthorized.
-            if len(customer_object) == 0:
-                return {"message": "Invalid JWT, not logged in or invalid token"}, 401
+            if customer_object.customer_id != None:
+                return {"message": "Invalid cid. The customer doesnt exist in our database"}, 401
             
-            return {"message": "Email of the customer was found", "email": customer_object.customer_email}, 201
-        except Exception as err:
-            return {"message": "Something went wrong on the server", "error": str(err)}, 500
+            return {"message": "Email of the customer was found", "email": customer_object.customer_email}, 202
 
+        except Exception as err:
+            return {"message": "Something went wrong on the server", 
+                "error": str(err)
+                }, 500
+
+## URI: /v1/customer/name
 class GetName(Resource):
     @jwt_required
     def get(self):
@@ -149,12 +184,19 @@ class GetName(Resource):
             # Getting the cid from the jwt.
             current_customer = get_jwt_identity()
 
-            # Checks if no object got returned in the query, then return 401 Unauthorized.
-            if len(customer_object) == 0:
-                return {"message": "Invalid JWT, not logged in or invalid token"}, 401
-
             # Getting the customer from the database through the model in models.py
             customer_object= Customer.find_by_cid(currenr_customer)
-            return {"message": "Name of the customer was found", "firstName": customer_object.customer_first_name, "lastName": customer_object.customer_last_name}, 201
+
+            # Checks if no object got returned in the query, then return 401 Unauthorized.
+            if customer_object.customer_id != None:
+                return {"message": "Invalid cid. The customer doesnt exist in our database"}, 401
+
+            return {"message": "Name of the customer was found", 
+                "firstName": customer_object.customer_first_name, 
+                "lastName": customer_object.customer_last_name
+                }, 202
+
         except Exception as err:
-            return {"message": "Something went wrong on the server", "error": str(err)}, 500
+            return {"message": "Something went wrong on the server", 
+                "error": str(err)
+                }, 500
