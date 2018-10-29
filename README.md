@@ -4,8 +4,6 @@
 
 Welcome to the Customer Database team. We taking care of registering new customers and logging them in, as well as giving other teams information about the Customer.
 
-Note: Everything here is subject to change!
-
 ## Developing
 ### Built with
 * __Python 3.6__
@@ -48,7 +46,7 @@ __Make sure you have installed Git and Docker before doing the commands below.__
 
         1. Docker does a lot of stuff.
 
-        1. Docker installs everything under [built with](#built-with)
+        1. Docker installs everything under [_built with_](#built-with)
 
         1. Docker sets up the database
 
@@ -87,7 +85,7 @@ __Make sure you have installed Git and Docker before doing the commands below.__
 
 With our Api you can get the name, email and Customer Identification Number(cid) of the customer, more will come in the future.
 
-> If you really want to get quickly started see our [_Full example_](docs/usage.md#full-example).
+> If you really want to get quickly started see our [_Full example_](docs/usage.md#full-example), but its recommended to read through _How to use the API_ in [_Usage_](docs/usage.md).
 
 To read the documentation go to the [_API docs_](docs/).
 
@@ -95,7 +93,7 @@ If you want to go straight to how to use the API, go to [_Usage_](docs/usage.md)
 
 ### Very brief about how to use the API
 
-In order to obtain information about the Customer, send a get-request with the authorization header you got from the client as a authorization header(how to do that is in Usage docs linked above). Use the base address in the "setting up dev" section with one of the following URIs attached:
+In order to obtain information about the Customer, send a get-request with the authorization header you got from the client as an authorization header(how to do that is in Usage docs linked above). Use the base address in the "setting up dev" section with one of the following URIs attached:
 
 * /v1/customer/cid
 * /v1/customer/email

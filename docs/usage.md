@@ -34,6 +34,18 @@ In order to get information about the customer, send a request with the authoriz
 
     > If there is no header, the jwt in the header is invalid, the response will be 4xx status code.
 
+### The http status codes
+
+> Note: Flask-JWT-Extended can send a variety of different 4xx responses, all of them indicates that something is wrong.
+
+* 2xx:
+    * 202 Created: Your request was accepted and you got a response with the information you requested.
+    * 200 OK: Your request was processed as you requested
+
+* 4xx status codes are at the moment controlled mostly by Flask-JWT-Extended, this will change in the near future. The following is what we have customized: 
+    * 401 UNAUTHORIZED: The request was valid but the customer does not exist in the database.
+    * More will come
+
 ### Get the Customer Identification Number (cid) of the currently logged in customer
 __URI: /v1/customer/cid/__
 
@@ -225,7 +237,6 @@ def get_name():
 ## Full example
 
 Here is a full example of how to get information from our Api:
-The example assumes you got a request from a client. 
 
 > The imagined setup here is that a customer(the client) sends a request to your backend, and you want information about that customer from the Customer database. 
 
