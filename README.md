@@ -44,20 +44,42 @@ Make sure you have installed Git and Docker before doing the commands below.
     * If you are using docker toolbox, the address is  http://192.168.99.100:5052/
     * If you are using the new docker, the address is  http://127.0.0.1:5052/
 
-## Api Reference
+1. You are ready to go!
+
+> Note: If you change anything in the files of the composer, you need to stop the container and run it again for the changes to take effect.
+
+&nbsp;
+
+### Useful for testing
+
+* If you want to reset the database, use these commands:
+    ```shell
+    docker-compose down -v
+    docker-compose up --build
+    ```
+* If you want to query directly into the database use this command, then treat it like you are using SQL statements.
+    > Note: The container you started in step 2 must be running before executing this command.
+
+    ```shell
+    docker exec -it customer_db_1 mysql -uroot -p
+    ```
+
+## API Reference
 
 With our Api you can get the name, email and Customer Identification Number(cid) of the customer, more will come in the future.
 
-If you really want to get quickly started see our [full example here](docs/usage.md#full-example).
+> If you really want to get quickly started see our [full example here](docs/usage.md#full-example).
 
-To go straight to how to use the api: [Usage](docs/usage.md).
+Everything you need is in the [API docs](docs/).
 
-Look at the [Api docs](docs/) for more information.
+How to use the API is here: [Usage](docs/usage.md).
 
-In order to obtain information about the Customer, send a get-request with the authorization header you got from the client as a authorization header(how to do that is in docs linked above). Use the base address in the "setting up dev" section with one of the following URIs attached:
+### Very brief about how to use the API
+
+In order to obtain information about the Customer, send a get-request with the authorization header you got from the client as a authorization header(how to do that is in Usage docs linked above). Use the base address in the "setting up dev" section with one of the following URIs attached:
 
 * /v1/customer/cid
 * /v1/customer/email
 * /v1/customer/name
 
-> For example, if you are using the new docker, 127.0.0.1:5052/v1/customer/cid to get the cid of the currently logged in customer.
+> For example, if you are using the new docker, send a get request to 127.0.0.1:5052/v1/customer/cid to get the cid of the currently logged in customer.

@@ -1,22 +1,26 @@
-# How to use the Customer Api 
+# How to use the Customer API
 
-If you want to start using our Api, here is how to get started.
+If you want to start using our API, here is how to get started.
 
 _If you want to jump to the code example, click [here](#full-example)_
 
-The IP address is as follows:
+When referring to address, it is the following:
 * If you are using docker toolbox, the address is  http://192.168.99.100:5052/
 * If you are using the new docker, the address is  http://127.0.0.1:5052/
 
+
+
+> If you have any issues or something is unclear, please contact Group 5 in the group classes or on slack(Bjørnar/Martin).
+
 ## Getting information about the Customer
 
-In order to get information about the customer, send a request with the authorization header(which contains the customer's jwt) from the client request.
+In order to get information about the customer, send a request with the authorization header(which contains the customer's jwt) that came from the client request.
 
 > Why? Because when a customer logs in, a jwt-object is sent to and stored on the client(device of the customer). In order for us to give information about that Customer, we need the JWT-object to identify the Customer and confirm that they are logged in. Note: It is possible that in the future, there will be no need to send the header.
 
 * The different Requests are covered below.
 
-* To send the authorization header with the request, make a dict with the authorization from the request you recieved.
+* To send the authorization header with the request, make a dict with the authorization header from the request you recieved.
 
 * JWT Example in python with flask:
     ```python
@@ -30,17 +34,17 @@ In order to get information about the customer, send a request with the authoriz
         r = requests.get(<address>, headers= get_headers())
     ```
 
-    > If there is no header, or the jwt in the header is invalid, the response will be 401 Not Found, which means that the client is not logged in as.
+    > If there is no header, the jwt in the header is invalid, the response will be 4xx status code.
 
 ### Get the Customer Identification Number (cid) of the currently logged in customer
 URI: /v1/customer/cid/
 
 To get the cid of a customer, send a get request to the docker url specified at the top with this URI: /v1/customer/cid
-The number you get is between 8 and 16 digits long.
+The number you get is 8 digits long(might change in the future).
 
 > The returned cid is an integer. This cid number below(40129339) is just an example.
 
-* On success, the status code is 201 and you get this json object: 
+* On success, the status code is 202 and you get this json object: 
     ```json
        {
            "message": "Cid for the current customer was found",
@@ -72,15 +76,15 @@ def get_cid():
     jti = get_raw_jwt()
 
     # Sending the get-request with header required
-    r = requests.get("127.0.0.1:5052/v1/customer/cid", headers=get_headers())
+    r = requests.get("<address>/v1/customer/cid", headers=get_headers())
     
     # If the status code is 500, an error on our part occured
     if r.status() == 500:
         return r.json() # Contains "message" and "error" which tell you what happened
 
     #If the status code is 401, there is no logged in customer or the jwt sent is invalid
-    else if r.status() == 401:
-        return "Noone is logged in"
+    elif r.status() >= 400 and r.status() < 500:
+        return "Not logged in or Invalid authentication"
     
     # The message is recieved with every request and tell you what happened
     print(r.json()["message"])
@@ -103,7 +107,7 @@ To get the email of the currently logged in user, send a get request to the dock
 > The returned email is a string. The email below is just an example
 
 #### Returns:
-* On success, the status code is 201 and you get this json object: 
+* On success, the status code is 202 and you get this json object: 
     ```json
        {
            "message": "Email for the current user was found",
@@ -139,8 +143,8 @@ def get_email():
         return r.json() # Contains "message" and "error" which tell you what happened
 
     #If the status code is 401, there is no logged in customer or the jwt sent is invalid
-    else if r.status() == 401:
-        return "Noone is logged in"
+    elif r.status() >= 400 and r.status() < 500:
+        return "Not logged in or Invalid authentication"
     
     # The message is recieved with every request and tell you what happened
     print(r.json()["message"])
@@ -160,13 +164,13 @@ URI: /v1/customer/name
 
 To get the name of the currently logged in customer, send a get request to the docker url specified at the top with this URI: /v1/customer/name.
 
-> The returned firstName and LastName are strings. The name below is just an example. If the Customer does not have a first and/or last name, it will be an empty string
+> The returned firstName and lastName are strings. The name below is just an example. If the Customer does not have a first and/or last name, it will be an empty string
 
 #### Returns
 
-* On success, the status code is 201 and you get this json object:
+* On success, the status code is 202 and you get this json object:
 
-    In this example the Customer have a first name, but do not have a last name
+    In this example the Customer's name is "Test Customer".
     ```json
        {
            "message": "The Name for the current customer was found",
@@ -203,8 +207,8 @@ def get_name():
         return r.json() # Contains "message" and "error" which tell you what happened
 
     #If the status code is 401, there is no logged in customer or the jwt sent is invalid
-    else if r.status() == 401:
-        return "Noone is logged in"
+    elif r.status() >= 400 and r.status() < 500:
+        return "Not logged in or Invalid authentication"
     
     # The message is recieved with every request and tell you what happened
     print(r.json()["message"])
@@ -215,7 +219,7 @@ def get_name():
     name["lastName"] = r.json()["lastName"]
     return name
 
-    # This is how it will be displayed
+    # This is what gets returned
     > {"firstName": <first name>, "lastName": <last name>}
 
 ```
