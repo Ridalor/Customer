@@ -10,6 +10,7 @@ services:
       - "5052:5052"
     environment:
       MySQLPassword: ${MySQLPassword}
+      CustomerSecret: ${CustomerSecret}
 
   db:
     build: ./src/Database
