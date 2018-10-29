@@ -16,4 +16,5 @@ services:
     ports:
       - "32010:3306"
     environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
       MYSQL_ROOT_PASSWORD: ${MySQLPassword}

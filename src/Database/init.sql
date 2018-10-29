@@ -18,5 +18,3 @@ CREATE TABLE IF NOT EXISTS revoked_tokens (
   jti varchar(128) DEFAULT NULL,
   PRIMARY KEY (id)
 );
-
-
