@@ -12,11 +12,11 @@ app.debug = True
 EnvVars = os.environ
 
 #Checking if the Enviroment variables exist, and uses them to connect to database. If they were not found, uses default values
-if "MySQLUserName" in EnvVars and "MySQLPassword" in EnvVars:
-    mysqlAddress = "mysql+pymysql://" + EnvVars["MySQLUserName"] + ":" + EnvVars["MySQLPassword"] + "@127.0.0.1:3352/customer"
+if "MySQLPassword" in EnvVars:
+    mysqlAddress = "mysql+pymysql://root:" + EnvVars["MySQLPassword"] + "@db/customer"
 else:
     print("WARNING: \"MySQLUserName\" and \"MySQLPassword\" environment variables are not set! See \"setting up dev\" at https://github.com/DAT210/Customer for information. Using the default username and password(unsecure!)")
-    mysqlAddress = "mysql+pymysql://root:password@127.0.0.1:3352/customer"
+    mysqlAddress = "mysql+pymysql://root:root@db/customer"
 
 api = Api(app)
 
@@ -84,5 +84,5 @@ api.add_resource(resources.GetEmail, '/v1/customer/email')
 api.add_resource(resources.GetName, '/v1/customer/name')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=5052, host="0.0.0.0", debug=True)
 
