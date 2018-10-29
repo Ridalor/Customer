@@ -4,13 +4,11 @@ If you want to start using our API, here is how to get started.
 
 _If you want to jump to the code example, click [here](#full-example)_
 
-When referring to address, it is the following:
+__When referring to address, it is the following:__
 * If you are using docker toolbox, the address is  http://192.168.99.100:5052/
 * If you are using the new docker, the address is  http://127.0.0.1:5052/
 
-
-
-> If you have any issues or something is unclear, please contact Group 5 in the group classes or on slack(Bjørnar/Martin).
+> If you have any issues or something is unclear, please check out [FAQ](/faq.md) or contact Group 5 in the group classes or on slack(Bjørnar/Martin).
 
 ## Getting information about the Customer
 
@@ -37,7 +35,7 @@ In order to get information about the customer, send a request with the authoriz
     > If there is no header, the jwt in the header is invalid, the response will be 4xx status code.
 
 ### Get the Customer Identification Number (cid) of the currently logged in customer
-URI: /v1/customer/cid/
+__URI: /v1/customer/cid/__
 
 To get the cid of a customer, send a get request to the docker url specified at the top with this URI: /v1/customer/cid
 The number you get is 8 digits long(might change in the future).
@@ -100,7 +98,7 @@ def get_cid():
 ```
 
 ### Get the email of the currently logged in customer
-URI: /v1/customer/email
+__URI: /v1/customer/email__
 
 To get the email of the currently logged in user, send a get request to the docker url specified at the top with this URI: /v1/customer/email
 
@@ -160,7 +158,7 @@ def get_email():
 ```
 
 ### Get the Name of the currently logged in customer
-URI: /v1/customer/name
+__URI: /v1/customer/name__
 
 To get the name of the currently logged in customer, send a get request to the docker url specified at the top with this URI: /v1/customer/name.
 
@@ -227,7 +225,9 @@ def get_name():
 ## Full example
 
 Here is a full example of how to get information from our Api:
-The example assumes you got a request from a client.
+The example assumes you got a request from a client. 
+
+> The imagined setup here is that a customer(the client) sends a request to your backend, and you want information about that customer from the Customer database. 
 
 ```python
 from flask import Flask, request
