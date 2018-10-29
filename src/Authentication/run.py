@@ -83,9 +83,6 @@ api.add_resource(resources.GetCid, '/v1/customer/cid')
 api.add_resource(resources.GetEmail, '/v1/customer/email')
 api.add_resource(resources.GetName, '/v1/customer/name')
 
-# Not sure what to do with this yet...
-api.add_resource(resources.SecretResource, '/secret')
-
 if __name__ == '__main__':
     app.run(port=5052, host="0.0.0.0", debug=True)
 
