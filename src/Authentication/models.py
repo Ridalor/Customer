@@ -2,7 +2,7 @@ from run import db
 from run import pwd_context
 
 class Customer(db.Model):
-    __tablename__ = "Customer_table"
+    __tablename__ = "customer_table"
     customer_id = db.Column(db.Integer, primary_key = True, nullable = False)
     customer_email = db.Column(db.String(128), unique = True, nullable = False)
     customer_password = db.Column(db.String(128), unique = False, nullable = True)

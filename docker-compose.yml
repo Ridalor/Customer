@@ -2,16 +2,19 @@ version: "3"
 services:
   app:
     build: ./src/Authentication
-    depends_on: :
-      - "db"
+    depends_on:
+      - db
+    links:
+      - db
     ports:
       - "5052:5052"
+    environment:
+      MySQLPassword: ${MySQLPassword}
 
   db:
-    image: mysql:5.7
+    image: mysql
+    build: ./src/Database
     ports:
-      - "32010:3310"
+      - "32010:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: root
-    volumes:
-      - ./src/Database:/docker-entrypoint-initdb.d/:ro
+      MYSQL_ROOT_PASSWORD: ${MySQLPassword}

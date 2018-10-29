@@ -57,11 +57,11 @@ class CustomerLogin(Resource):
             return {'message': 'User {} doesn\'t exist'.format(data['email'])}
         
         # Checking password, if correct, it makes tokens to log the customer in
-        if Customer.verify_hash(data["password"], current_customer.password):
+        if Customer.verify_hash(data["password"], current_customer.customer_password):
             access_token = create_access_token(identity = data['email'])
             refresh_token = create_refresh_token(identity = data['email'])
             return {
-                'message': 'Logged in as {}'.format(current_customer.email),
+                'message': 'Logged in as {}'.format(current_customer.customer_email),
                 'access_token': access_token,
                 'refresh_token': refresh_token
             }, 201
