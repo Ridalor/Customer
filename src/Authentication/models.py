@@ -25,12 +25,6 @@ class Customer(db.Model):
     @classmethod
     def find_by_email(cls, email):
         return cls.query.filter_by(customer_email = email).first()
-    
-    @classmethod
-    def number_of_customers(cls):
-        records = db.session.query(cls).all()
-        number = len(records)
-        return number
 
     def save_to_db(self):
         db.session.add(self)
