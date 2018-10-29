@@ -142,7 +142,7 @@ class GetCid(Resource):
             customer_object = Customer.find_by_cid(current_customer)
 
             # Checks if no object got returned in the query, then return 401 Unauthorized.
-            if customer_object.customer_id != None:
+            if customer_object.customer_id == None:
                 return {"message": "Invalid cid. The customer doesnt exist in our database"}, 401
 
             return {"message": "The cid was found", 
@@ -166,7 +166,7 @@ class GetEmail(Resource):
             customer_object= Customer.find_by_cid(current_customer)
 
             # Checks if no object got returned in the query, then return 401 Unauthorized.
-            if customer_object.customer_id != None:
+            if customer_object.customer_id == None:
                 return {"message": "Invalid cid. The customer doesnt exist in our database"}, 401
             
             return {"message": "Email of the customer was found", "email": customer_object.customer_email}, 202
@@ -185,10 +185,10 @@ class GetName(Resource):
             current_customer = get_jwt_identity()
 
             # Getting the customer from the database through the model in models.py
-            customer_object= Customer.find_by_cid(currenr_customer)
+            customer_object= Customer.find_by_cid(current_customer)
 
             # Checks if no object got returned in the query, then return 401 Unauthorized.
-            if customer_object.customer_id != None:
+            if customer_object.customer_id == None:
                 return {"message": "Invalid cid. The customer doesnt exist in our database"}, 401
 
             return {"message": "Name of the customer was found", 
