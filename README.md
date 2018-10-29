@@ -4,13 +4,10 @@
 
 Welcome to the Customer Database team. We taking care of registering new customers and logging them in, as well as giving other teams information about the Customer.
 
-Note: Everything here is subject to change!
-
-## Getting started
-This will come at a later date.
-
 ## Developing
 ### Built with
+* __Python 3.6__
+* __MySQL 8.0__
 * Flask 1.0.2
 * Flask-SQLAlchemy 2.3.2
     * PyMySQL 0.9.2
@@ -20,14 +17,14 @@ This will come at a later date.
     * argon2-cffi 18.3.0
 
 ## Prerequisites
-* [Git](https://git-scm.com/downloads)
-* [Docker](https://www.docker.com/get-started)
+* __[Git](https://git-scm.com/downloads)__
+* __[Docker](https://www.docker.com/get-started)__
 
 ## Setting up Dev
-Make sure you have installed Git and Docker before doing the commands below.
+__Make sure you have installed Git and Docker before doing the commands below.__
 
 1. Set Environment variables
-    You need to set the following Environment variables. The keys needs to be exactly as written here, the vaules can be anything.
+    You need to set the following Environment variables. The keys needs to be _exactly_ as written here, but you choose the values to your liking.
     How to set Environment variables is described here: https://www.twilio.com/blog/2017/01/how-to-set-environment-variables.html
 
     * MySQLPassword
@@ -41,25 +38,45 @@ Make sure you have installed Git and Docker before doing the commands below.
     docker-compose up --build
     ```
 
-    * If you are using docker toolbox, the address is  http://192.168.99.100:5052/
-    * If you are using the new docker, the address is  http://127.0.0.1:5052/
+    * The following happens when you executes those commands:
 
-1. You are ready to go!
+        1. Clones the project to your computer
 
-> Note: If you change anything in the files of the composer, you need to stop the container and run it again for the changes to take effect.
+        1. Change directory into the project you just cloned
+
+        1. Docker does a lot of stuff.
+
+        1. Docker installs everything under [_built with_](#built-with)
+
+        1. Docker sets up the database
+
+        1. Docker runs the flask app
+
+1. Ready to receive requests
+
+&nbsp;
+
+### IP address to send requsts to:
+
+* If you are using docker toolbox, the address is  http://192.168.99.100:5052/
+* If you are using the new docker, the address is  http://127.0.0.1:5052/
+
+> Note: If you change anything in the files of the composer, you need to stop the container and run it again for the changes to take effect. How to do that in _Useful for testing_ below.
 
 &nbsp;
 
 ### Useful for testing
 
-* If you want to reset the database, use these commands:
+* If you want to reset the database, stop container if running and use these commands:
     ```shell
     docker-compose down -v
     docker-compose up --build
     ```
 * If you want to query directly into the database use this command, then treat it like you are using SQL statements.
     > Note: The container you started in step 2 must be running before executing this command.
-
+    
+    > __Use caution while using this. If you mess up, reset the database as described above.__
+    
     ```shell
     docker exec -it customer_db_1 mysql -uroot -p
     ```
@@ -68,15 +85,15 @@ Make sure you have installed Git and Docker before doing the commands below.
 
 With our Api you can get the name, email and Customer Identification Number(cid) of the customer, more will come in the future.
 
-> If you really want to get quickly started see our [full example here](docs/usage.md#full-example).
+> If you really want to get quickly started see our [_Full example_](docs/usage.md#full-example), but its recommended to read through _How to use the API_ in [_Usage_](docs/usage.md).
 
-Everything you need is in the [API docs](docs/).
+To read the documentation go to the [_API docs_](docs/).
 
-How to use the API is here: [Usage](docs/usage.md).
+If you want to go straight to how to use the API, go to [_Usage_](docs/usage.md).
 
 ### Very brief about how to use the API
 
-In order to obtain information about the Customer, send a get-request with the authorization header you got from the client as a authorization header(how to do that is in Usage docs linked above). Use the base address in the "setting up dev" section with one of the following URIs attached:
+In order to obtain information about the Customer, send a get-request with the authorization header you got from the client as an authorization header(how to do that is in Usage docs linked above). Use the base address in the "setting up dev" section with one of the following URIs attached:
 
 * /v1/customer/cid
 * /v1/customer/email

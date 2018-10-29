@@ -4,13 +4,11 @@ If you want to start using our API, here is how to get started.
 
 _If you want to jump to the code example, click [here](#full-example)_
 
-When referring to address, it is the following:
+__When referring to address, it is the following:__
 * If you are using docker toolbox, the address is  http://192.168.99.100:5052/
 * If you are using the new docker, the address is  http://127.0.0.1:5052/
 
-
-
-> If you have any issues or something is unclear, please contact Group 5 in the group classes or on slack(Bjørnar/Martin).
+> If you have any issues or something is unclear, please check out [FAQ](/faq.md) or contact Group 5 in the group classes or on slack(Bjørnar/Martin).
 
 ## Getting information about the Customer
 
@@ -36,8 +34,20 @@ In order to get information about the customer, send a request with the authoriz
 
     > If there is no header, the jwt in the header is invalid, the response will be 4xx status code.
 
+### The http status codes
+
+> Note: Flask-JWT-Extended can send a variety of different 4xx responses, all of them indicates that something is wrong.
+
+* 2xx:
+    * 202 Created: Your request was accepted and you got a response with the information you requested.
+    * 200 OK: Your request was processed as you requested
+
+* 4xx status codes are at the moment controlled mostly by Flask-JWT-Extended, this will change in the near future. The following is what we have customized: 
+    * 401 UNAUTHORIZED: The request was valid but the customer does not exist in the database.
+    * More will come
+
 ### Get the Customer Identification Number (cid) of the currently logged in customer
-URI: /v1/customer/cid/
+__GET: /v1/customer/cid/__
 
 To get the cid of a customer, send a get request to the docker url specified at the top with this URI: /v1/customer/cid
 The number you get is 8 digits long(might change in the future).
@@ -100,7 +110,7 @@ def get_cid():
 ```
 
 ### Get the email of the currently logged in customer
-URI: /v1/customer/email
+__GET: /v1/customer/email__
 
 To get the email of the currently logged in user, send a get request to the docker url specified at the top with this URI: /v1/customer/email
 
@@ -160,7 +170,7 @@ def get_email():
 ```
 
 ### Get the Name of the currently logged in customer
-URI: /v1/customer/name
+__GET: /v1/customer/name__
 
 To get the name of the currently logged in customer, send a get request to the docker url specified at the top with this URI: /v1/customer/name.
 
@@ -223,11 +233,70 @@ def get_name():
     > {"firstName": <first name>, "lastName": <last name>}
 
 ```
+## __The following section is for testing in the development phase only__
+__The following endpoints will be removed before production__
+
+### Get all customers in the database
+__GET: /v1/customers__
+
+To get everything from all customers, send a get request to the docker url specified at the top with this URI: /v1/customer/name.
+
+> It returns every field of every customer in json
+
+#### Returns
+
+* On success, the status code is 200 and you get this json object:
+
+    In this example the Customer's name is "Test Customer".
+    ```json
+       {
+    "customers": [
+        {
+            "email": "test@testing.com",
+            "firstName": "Test",
+            "lastName": "Customer",
+            "password": "<hashed_password>"
+        },
+        {
+            "email": "test1@testing.com",
+            "firstName": null,
+            "lastName": "Cust",
+            "password": "<hashed_password>"
+        }
+    ]
+}
+    ```
+### Delete all customers in the database
+__DELETE: /v1/customers__
+
+To delete every customer in the database, send a DELETE request to the docker url specified at the top with this URI: /v1/customer/name.
+
+> NOTE: This really do delete every customer in the database. This request will of course be removed before production.
+
+#### Returns
+
+* On success, the status code is 200 and you get this json object:
+
+    In this example the Customer's name is "Test Customer".
+    ```json
+    {
+        "message": "X row(s) deleted"
+    }
+    ```
+* On failure on the server, the status code is 500, and you get this json object:
+
+    ```json
+       {
+           "message": "Something went wrong", 
+           "error": "<Error string>"
+       }
+    ```
 
 ## Full example
 
 Here is a full example of how to get information from our Api:
-The example assumes you got a request from a client.
+
+> The imagined setup here is that a customer(the client) sends a request to your backend, and you want information about that customer from the Customer database. 
 
 ```python
 from flask import Flask, request
