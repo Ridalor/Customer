@@ -1,0 +1,21 @@
+version: "3"
+services:
+  app:
+    build: ./src/Authentication
+    depends_on:
+      - db
+    links:
+      - db
+    ports:
+      - "5052:5052"
+    environment:
+      MySQLPassword: ${MySQLPassword}
+      CustomerSecret: ${CustomerSecret}
+
+  db:
+    build: ./src/Database
+    ports:
+      - "32010:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      MYSQL_ROOT_PASSWORD: ${MySQLPassword}
