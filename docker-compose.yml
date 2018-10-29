@@ -12,7 +12,6 @@ services:
       MySQLPassword: ${MySQLPassword}
 
   db:
-    image: mysql
     build: ./src/Database
     ports:
       - "32010:3306"
