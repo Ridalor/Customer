@@ -17,17 +17,18 @@ mysqlAddress = "mysql+pymysql://root:" + EnvVars["MySQLPassword"] + "@db/custome
 if EnvVars["MySQLPassword"] == "":
     print("WARNING: \"MySQLPassword\" Environment variable is not set. Please add the environment variable and restart your computer, see \"setting up dev\" on https://github.com/DAT210/Customer. MySQL Database now has no password")
 
-if EnvVars["CustomerSecret"]:
-    print("WARNING: \"CustomerSecret\" environment variable is not set! See \"setting up dev\" at https://github.com/DAT210/Customer for information. Using the default secret(unsecure!)")
-
-
 api = Api(app)
 
 #Setting up sqlalchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = mysqlAddress
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-app.config['SECRET_KEY'] = EnvVars["CustomerSecret"]
+#Checking if the Enviroment variable exist, and uses that as secret. If they were not found, uses default value
+if "CustomerSecret" in EnvVars:
+    app.config['SECRET_KEY'] = EnvVars["CustomerSecret"]
+else:
+    print("WARNING: \"CustomerSecret\" environment variable is not set! See \"setting up dev\" at https://github.com/DAT210/Customer for information. Using the default secret(unsecure!)")
+    app.config['SECRET_KEY'] = "default-secret-key"
 
 db = SQLAlchemy(app)
 
@@ -36,7 +37,12 @@ def create_tables():
     db.create_all()
 
 #Adding jwt
-app.config['JWT_SECRET_KEY'] = EnvVars["CustomerSecret"]
+## Checking if the Enviroment variable exist, and uses that as secret. If they were not found, uses default value
+if "CustomerSecret" in EnvVars:
+    app.config['SECRET_KEY'] = EnvVars["CustomerSecret"]
+else:
+    app.config['SECRET_KEY'] = "default-jwt-secret-key"
+
 jwt = JWTManager(app)
 
 #Setting up blacklist
