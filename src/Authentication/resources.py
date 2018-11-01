@@ -142,7 +142,7 @@ class GetCid(Resource):
             customer_object = Customer.find_by_cid(current_customer)
 
             # Checks if no object got returned in the query, then return 401 Unauthorized.
-            if customer_object.customer_id == None:
+            if customer_object == None:
                 return {"message": "Invalid cid. The customer doesnt exist in our database"}, 401
 
             return {"message": "The cid was found", 
