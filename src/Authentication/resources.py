@@ -12,7 +12,7 @@ parser.add_argument('password', help = 'This field cannot be blank', required = 
 # Registration
 ## URI: /registration
 class CustomerRegistration(Resource):
-    def post(self):
+    def get(self):
         data = parser.parse_args()
         # Hashing password as soon as possible, Please dont add anything between the line above and below this comment
         data["password"] = Customer.generate_hash(data["password"])
@@ -56,7 +56,7 @@ class CustomerRegistration(Resource):
 # Login
 ## URI: /login
 class CustomerLogin(Resource):
-    def post(self):
+    def get(self):
         data = parser.parse_args()
 
         # Finding customer from the database
@@ -192,8 +192,8 @@ class GetName(Resource):
                 return {"message": "Invalid cid. The customer doesnt exist in our database"}, 401
 
             return {"message": "Name of the customer was found", 
-                "firstName": customer_object.customer_first_name, 
-                "lastName": customer_object.customer_last_name
+                "firstName": customer_object.first_name, 
+                "lastName": customer_object.last_name
                 }, 202
 
         except Exception as err:
