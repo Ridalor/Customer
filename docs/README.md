@@ -1,14 +1,14 @@
-# Customer Api Documentation
+# Customer API Documentation
 
-Welcome to the documentation for Customer Api. 
-
-__For a full code example of getting information about a customer, see [Full example](usage.md#fullExample)__
+Welcome to the documentation for Customer API. 
 
 ## Links
 * [Table of contents](TOC.md)
 * [Frequently asked questions](faq.md)
-* [Misc](misc.md)
+* [How everything works and Misc](misc.md)
 * [How to use the Api](usage.md)
+* [Full code example](usage.md#full-example)
+* [How to test](usage.md#testing)
 
 
 ## Base address to use when interacting with the Customer Api

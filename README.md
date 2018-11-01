@@ -83,11 +83,13 @@ __Make sure you have installed Git and Docker before doing the commands below.__
 
 ## API Reference
 
+__Important:__ Keep in mind that how you send the requests to us may change in the future.
+
 With our Api you can get the name, email and Customer Identification Number(cid) of the customer, more will come in the future.
 
-> If you really want to get quickly started see our [_Full example_](docs/usage.md#full-example), but its recommended to read through _How to use the API_ in [_Usage_](docs/usage.md).
+_If you are new to our API, please read the full documentation: [Docs](/docs)_
 
-To read the documentation go to the [_API docs_](docs/).
+> If you really want to get quickly started see our [_Full example_](docs/usage.md#full-example), but its recommended to read through _How to use the API_ in [_Usage_](docs/usage.md).
 
 If you want to go straight to how to use the API, go to [_Usage_](docs/usage.md).
 
