@@ -311,24 +311,23 @@ To get everything from all customers, send a get request to the docker url speci
 
 * On success, the status code is 200 and you get this json object:
 
-    In this example the Customer's name is "Test Customer".
     ```json
-       {
-    "customers": [
-        {
-            "email": "test@testing.com",
-            "firstName": "Test",
-            "lastName": "Customer",
-            "password": "<hashed_password>"
-        },
-        {
-            "email": "test1@testing.com",
-            "firstName": null,
-            "lastName": "Cust",
-            "password": "<hashed_password>"
-        }
-    ]
-}
+    {
+        "customers": [
+            {
+                "email": "test@testing.com",
+                "firstName": "Test",
+                "lastName": "Customer",
+                "password": "<hashed_password>"
+            },
+            {
+                "email": "test1@testing.com",
+                "firstName": null,
+                "lastName": "Cust",
+                "password": "<hashed_password>"
+            }
+        ]
+    }
     ```
 ### Delete all customers in the database
 __DELETE: /v1/customers__
@@ -340,8 +339,6 @@ To delete every customer in the database, send a DELETE request to the docker ur
 #### Returns
 
 * On success, the status code is 200 and you get this json object:
-
-    In this example the Customer's name is "Test Customer".
     ```json
     {
         "message": "X row(s) deleted"
@@ -509,6 +506,8 @@ At this point you should have implemented the code as shown in the [Getting info
 
 Then all you have to do is:
 
+1. Make a new request with the plus icon almost top left
+
 1. Write your __address__ in the _address_ field.
 
 1. Paste the __access token__ in the _Authorization field_ as described above.
@@ -516,7 +515,7 @@ Then all you have to do is:
 1. Click _send_.
 
 #### What to do when the access token expires/becomes invalid?
-You have 2 options, either login with the __email__ and __password__ as described above, or refresh the token as follows:
+You have 2 options, either login again with the __email__ and __password__ as described above, or refresh the token as follows:
 
 1. Copy the __refresh token__ you got after registering or login.
 
