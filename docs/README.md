@@ -7,7 +7,7 @@ __For a full code example of getting information about a customer, see [Full exa
 ## Links
 * [Table of contents](TOC.md)
 * [Frequently asked questions](faq.md)
-* [Misc](misc.md)
+* [How everything works and Misc](misc.md)
 * [How to use the Api](usage.md)
 
 
