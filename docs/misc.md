@@ -20,4 +20,6 @@ If an access token is logged out, or expired, the customer is still logged in, b
 
 ## Getting information
 
-So if you have a system that interacts with customers, lets say Orders or Booking for instance, you probably have information that you would like to store and tie to a customer. How to do this is described in [Usage](/usage.md). When a request for information is recieved, we look at the JWT access token, and if its valid, we get the cid out of that, finds the infromation requested and send it back. 
+So if you have a system that interacts with customers, lets say Orders or Booking for instance, you probably have information that you would like to store and tie to a customer. How to do this is described in [Usage](/usage.md), you basically store the information in your way, but with the cid in a column in the table. 
+
+When a request for information is recieved, we look at the JWT access token, and if its valid, we get the cid out of that, finds the information requested and send it as a response. 
