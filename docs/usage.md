@@ -467,11 +467,11 @@ If you couldnt import the collection, the routes are as follows:
 #### Register
 1. To register a customer use the Registration route, click "body", click form-data, add email and password and click send. 
 
-![Postman Illustration image](images/Postman1.png)
+![Postman Illustration image](images/Postman/Postman1.png)
 
 1. After a second or 2, you should get a response, hopefully with a message, access token and refresh token. Like this: 
 
-![Postman Illustration image](images/Postman2.png)
+![Postman Illustration image](images/Postman/Postman2.png)
 
 1. The access token is what you will use when getting information, so copy that.
 
@@ -494,12 +494,12 @@ The following also works exactly the same way for __email__ and __name__, I will
 1. Select the _Get Cid_ request from the collection.
 
 1. Click _Authorization_, then select __Bearer token__ as _TYPE_, and paste the __access token__ in the left field.
-![Postman Illustration image](images/Postman3.png)
+![Postman Illustration image](images/Postman/Postman3.png)
 
 1. Click _Send_.
 
 1. Then after a second or 2, you hopefully get a message and the __cid__, like this: 
-![Postman Illustration image](images/Postman4.png)
+![Postman Illustration image](images/Postman/Postman4.png)
 
 #### Getting information via your system
 At this point you should have implemented the code as shown in the [Getting information about the customer](#getting-information-about-the-customer) section.
