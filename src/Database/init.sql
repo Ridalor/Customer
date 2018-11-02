@@ -8,6 +8,8 @@ CREATE TABLE IF NOT EXISTS customer_table (
   first_name varchar(128) DEFAULT NULL,
   last_name varchar(128) DEFAULT NULL,
   customer_password varchar(93) DEFAULT NULL,
+  customer_birthday date DEFAULT NULL,
+  customer_phone int(11) DEFAULT NULL,
   address_id int(11) DEFAULT NULL,
   address varchar(128) DEFAULT NULL,
   PRIMARY KEY (customer_id),
