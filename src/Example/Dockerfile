@@ -6,6 +6,4 @@ COPY . /usr/src
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 5052
-
-CMD [ "python", "run.py" ]
+CMD [ "python", "example_data.py" ]
