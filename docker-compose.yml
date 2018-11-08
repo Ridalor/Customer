@@ -7,7 +7,7 @@ services:
     links:
       - db
     ports:
-      - "5052:5052"
+      - "25201:25201"
     environment:
       MySQLPassword: ${MySQLPassword}
       CustomerSecret: ${CustomerSecret}
