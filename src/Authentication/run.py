@@ -82,4 +82,4 @@ api.add_resource(resources.GetEmail, '/v1/customer/email')
 api.add_resource(resources.GetName, '/v1/customer/name')
 
 if __name__ == '__main__':
-    app.run(port=5052, host="0.0.0.0", debug=True)
+    app.run(port=25201, host="0.0.0.0", debug=True)
