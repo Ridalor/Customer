@@ -246,16 +246,16 @@ class CustomerInfo(Resource):
                 }, 404
 
             if data["firstName"] != None:
-                customer.first_name = data["first_name"]
+                customer.first_name = data["firstName"]
 
             if data["lastName"] != None:
-                customer.last_name = data["last_name"]
+                customer.last_name = data["lastName"]
 
             if data["phone"] != None:
-                customer.customer_phone = data["customer_phone"]
+                customer.customer_phone = data["phone"]
             
             if data["birthday"] != None:
-                customer.customer_birthday = data["customer_birthday"]
+                customer.customer_birthday = data["birthday"]
 
             updatedCustomer = Customer(
                 customer_cid = customer["customer_id"],
