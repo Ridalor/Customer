@@ -6,8 +6,8 @@ import json
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
 
 parser = reqparse.RequestParser()
-parser.add_argument('email', help = 'This field cannot be blank', required = True)
-parser.add_argument('password', help = 'This field cannot be blank', required = True)
+#parser.add_argument('email', help = 'This field cannot be blank', required = True)
+#parser.add_argument('password', help = 'This field cannot be blank', required = True)
 
 # Registration
 ## URI: /registration
@@ -200,3 +200,82 @@ class GetName(Resource):
             return {"message": "Something went wrong on the server", 
                 "error": str(err)
                 }, 500
+
+#URI: /v1/customer
+class CustomerInfo(Resource):
+    @jwt_required
+    def get(self):
+        try:
+            # Getting the cid from the jwt.
+            current_customer = get_jwt_identity()
+
+            # Getting the customer from the database through the model in models.py
+            customer_object= Customer.find_by_cid(current_customer)
+
+            # Checks if no object got returned in the query, then return 401 Unauthorized.
+            if customer_object.customer_id == None:
+                return {"message": "Invalid cid. The customer doesnt exist in our database"}, 401
+
+            return {
+                "message": "The info requested was found",
+                "cid": current_customer,
+                "email": customer_object.customer_email,
+                "firstName": customer_object.first_name,
+                "lastName": customer_object.last_name,
+                "phone": customer_object.customer_phone,
+                "birthdate": customer_object.customer_birthday
+            }, 201
+        
+        except Exception as err: 
+            return {
+                "message": "Something went wrong on the server",
+                "error": str(err)
+                }, 500
+
+
+    @jwt_required
+    def put(self):
+        try:
+            data = parser.parse_args()
+            
+            customer = Customer.find_by_cid(get_jwt_identity())
+
+            if customer == None:
+                return {
+                    "message": "The customer does not exist in our database"
+                }, 404
+
+            if data["firstName"] != None:
+                customer.first_name = data["first_name"]
+
+            if data["lastName"] != None:
+                customer.last_name = data["last_name"]
+
+            if data["phone"] != None:
+                customer.customer_phone = data["customer_phone"]
+            
+            if data["birthday"] != None:
+                customer.customer_birthday = data["customer_birthday"]
+
+            updatedCustomer = Customer(
+                customer_cid = customer["customer_id"],
+                customer_email = customer["customer_email"],
+                first_name = customer["first_name"],
+                last_name = customer["last_name"],
+                customer_phone = customer["customer_phone"],
+                customer_birthday = customer["customer_birthday"]
+            )
+
+            updatedCustomer.save_to_db()
+
+            return {
+                "message": "Your information was successfully updated in the database",
+            }, 201
+        
+        except Exception as err:
+            return {
+                "message": "An error on the server occured while trying to update your information",
+                "error": str(err)
+            }, 500
+
+
