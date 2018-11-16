@@ -166,7 +166,7 @@ class GetEmail(Resource):
             customer_object= Customer.find_by_cid(current_customer)
 
             # Checks if no object got returned in the query, then return 401 Unauthorized.
-            if customer_object.customer_id == None:
+            if customer_object == None:
                 return {"message": "Invalid cid. The customer doesnt exist in our database"}, 401
             
             return {"message": "Email of the customer was found", "email": customer_object.customer_email}, 202
@@ -188,7 +188,7 @@ class GetName(Resource):
             customer_object= Customer.find_by_cid(current_customer)
 
             # Checks if no object got returned in the query, then return 401 Unauthorized.
-            if customer_object.customer_id == None:
+            if customer_object == None:
                 return {"message": "Invalid cid. The customer doesnt exist in our database"}, 401
 
             return {"message": "Name of the customer was found", 
