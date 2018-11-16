@@ -12,7 +12,7 @@ parser.add_argument('password', help = 'This field cannot be blank', required = 
 # Registration
 ## URI: /registration
 class CustomerRegistration(Resource):
-    def get(self):
+    def post(self):
         data = parser.parse_args()
         # Hashing password as soon as possible, Please dont add anything between the line above and below this comment
         data["password"] = Customer.generate_hash(data["password"])
@@ -56,7 +56,7 @@ class CustomerRegistration(Resource):
 # Login
 ## URI: /login
 class CustomerLogin(Resource):
-    def get(self):
+    def post(self):
         data = parser.parse_args()
 
         # Finding customer from the database
